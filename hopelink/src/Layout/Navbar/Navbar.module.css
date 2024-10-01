@@ -1,0 +1,32 @@
+.container{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1;
+}
+.nav{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    /* background-color: blue; */
+    align-items: center;
+    padding: 0 8% 0 8%;
+    height: 5rem;
+    
+}
+.navRight{
+    display: flex;
+    gap:4rem;
+}
+.li{
+    text-decoration: none;
+    color: rgb(255, 255, 255);
+    font-size: 19px;
+    font-weight: 400;
+}
+.logo{
+    color: lightblue;
+    font-size: 30px;
+    font-weight: 500;
+}
