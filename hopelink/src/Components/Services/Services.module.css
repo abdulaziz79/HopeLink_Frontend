@@ -1,0 +1,69 @@
+.container{
+    height: 94vh;
+    width: 96%;
+    margin: auto;
+    padding-top: 3rem;
+}
+.all{
+    height: 100%;
+    display: flex;
+}
+.left{
+    width: 55%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 6rem;
+}
+.card{
+    width: 93%;
+    height: 8rem;
+    border-top: 1px solid rgb(35, 49, 54);
+    display: flex;
+    padding: 1.8rem 0 1.8rem 0;
+    cursor: pointer;
+}
+.cardText{
+    width: 65%;
+    display: flex;
+    flex-direction: column;
+    gap: 1.4rem;
+}
+.h1{
+    font-size: 30px;
+    font-weight: 400;
+}
+.p{
+    /* padding-left: 1.4rem; */
+}
+.star{
+    width: 2.7rem;
+    height: 100%;
+    font-size: 60px;
+    font-weight: 300;
+    margin-top: -1rem;
+}
+.cardImage{
+    width: 33%;
+}
+.img{
+    width: 100%;
+    height: 10rem;
+    object-fit: cover;
+    border-radius: 20px;
+}
+.right{
+    width: 40%;
+    text-align: end;
+}
+.h2{
+    font-size: 60px;
+    line-height: 60px;
+    font-weight: 600;
+}
+.span{
+    font-weight: 300;
+}
+.text{
+    font-size: 20px;
+}

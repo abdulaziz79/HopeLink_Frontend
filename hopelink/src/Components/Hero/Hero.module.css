@@ -30,3 +30,50 @@
     font-weight: 600;
     color: rgb(90, 191, 225);
 }
+.pRight{
+    position: absolute;
+    right: 17%;
+    top: 20%;
+    color: lightgray;
+    display: flex;
+    flex-direction: column;
+    gap: 1.7rem;
+    /* line-height: 10px; */
+    
+}
+.h2{
+    font-size: 30px;
+}
+.colorful{
+    position: absolute;
+    bottom: 11%;
+    left: 7.5%;
+    font-size: 20px;
+    font-weight: 300;
+    color: white;
+}
+.color1{
+    width: 30rem;
+    background-color: rgb(218, 104, 78);
+    padding: 18px;
+}
+.color2{
+    width: 25rem;
+    background-color: rgb(26, 148, 218);
+    padding: 18px;
+    margin-top: -17px;
+}
+.color3{
+    width: 20rem;
+    background-color: rgb(188, 145, 89);
+    padding: 18px;
+    z-index: 3;
+    margin-top: -17px;
+    color: black;
+}.color4{
+    width: 15rem;
+    background-color: rgb(46, 15, 11);
+    padding: 18px;
+    z-index: 4;
+    margin-top: -17px;
+}

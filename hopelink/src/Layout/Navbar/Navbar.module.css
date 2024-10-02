@@ -24,6 +24,14 @@
     color: rgb(255, 255, 255);
     font-size: 19px;
     font-weight: 400;
+    /* border-right: 1px solid lightgray; */
+    /* padding-right: 60px; */
+    list-style-type: none;
+    transition: transform 0.3s ease, color 0.3s ease; 
+}
+.li:hover{
+    color: lightblue;
+    /* transform: scale(2); */
 }
 .logo{
     color: lightblue;
