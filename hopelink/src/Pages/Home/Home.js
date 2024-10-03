@@ -2,6 +2,7 @@ import React from 'react'
 import Hero from '../../Components/Hero/Hero'
 import styles from "./Home.module.css"
 import Services from '../../Components/Services/Services'
+import Contact from '../../Components/Contact/Contact'
 
 function Home() {
   return (
@@ -11,6 +12,9 @@ function Home() {
       </section>
       <section className={styles.services}>
       <Services />
+      </section>
+      <section className={styles.contact}>
+      <Contact />
       </section>
     </div>
   )
