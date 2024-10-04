@@ -47,6 +47,7 @@
     display: flex;
     flex-direction: column;
     gap: 2rem;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.155);
 }
 .topH1{
     font-size: 46px;
