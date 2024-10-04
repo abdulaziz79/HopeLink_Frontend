@@ -107,7 +107,7 @@ function Contact() {
       </div>
       
       <div>
-        <button type="submit" className={style.button}>Submit</button>
+        <button type="submit" className={style.button }>Submit</button>
       </div>
     </form>
         </div>
