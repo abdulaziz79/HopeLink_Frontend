@@ -5,6 +5,7 @@ import home from "../../assets/images/home.jpg"
 import donate from "../../assets/images/donate.jpg"
 import volunteer from "../../assets/images/volunteer.jpg"
 import request from "../../assets/images/request.jpg"
+import {Link} from "react-router-dom"
 
 
 
@@ -13,6 +14,7 @@ function Services() {
     <div className={styles.container}>
       <div className={styles.all}> 
         <div className={styles.left}>
+        <Link to="/house" className={styles.link} >
           <div className={styles.card}>
               <div className={styles.star}>*</div>
             <div className={styles.cardText}>
@@ -24,7 +26,8 @@ function Services() {
               <img src={home} className={styles.img} />
             </div>
           </div>
-          
+            </Link>
+            <Link to="/donate" className={styles.link} >
           <div className={styles.card}>
               <div className={styles.star}>*</div>
             <div className={styles.cardText}>
@@ -36,6 +39,8 @@ function Services() {
               <img src={donate} className={styles.img} />
             </div>
           </div>
+          </Link>
+
 
           <div className={styles.card}>
               <div className={styles.star}>*</div>

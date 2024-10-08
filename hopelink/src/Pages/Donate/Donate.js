@@ -1,46 +1,46 @@
-// import { useState } from "react";
-import styles from "./House.module.css";
-import img from "../../assets/images/house.jpg";
+import React, { useState } from 'react';
+import styles from "./Donate.module.css";
+import img from "../../assets/images/donate3.jpg";  // Profile image
+import donationImg from "../../assets/images/donate3.jpg";  // Reusing the test image for posts
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import PhoneIcon from '@mui/icons-material/Phone';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
-import BedIcon from '@mui/icons-material/Bed';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import { useState } from "react";
 
-function House() {
+function Donate() {
   const [activeButton, setActiveButton] = useState('Posts');
 
-  const houses = [
+  // Donation posts data (with optional images)
+  const donations = [
     {
-      location: "Beirut",
-      houseSpace: "200 m²",
-      bedrooms: 3,
+      donorName: "Abdelaziz",
+      location: "Tripoli",
       phoneNumber: "79165588",
       price: 500,
+      description: "A used laptop in good condition, perfect for students.",
+      timeAgo: "2 days ago",
+      postImage: donationImg,
     },
     {
-      location: "Tripoli",
-      houseSpace: "180 m²",
-      bedrooms: 2,
+      donorName: "Fatima",
+      location: "Beirut",
       phoneNumber: "70123456",
-      price: 400,
+      price: 300,
+      description: "Clothes for newborn babies, clean and well-packed.",
+      timeAgo: "1 day ago",
+      postImage: null, 
     },
     {
+      donorName: "Hassan",
       location: "Sidon",
-      houseSpace: "220 m²",
-      bedrooms: 4,
       phoneNumber: "78945612",
-      price: 600,
-    },
-    {
-      location: "Sidon",
-      houseSpace: "220 m²",
-      bedrooms: 4,
-      phoneNumber: "78945612",
-      price: 600,
+      price: 0, 
+      description: "Old books for high school students.",
+      timeAgo: "3 hours ago",
+      postImage: donationImg,
     }
   ];
+
+  
   const requests = [
     {
       donorName: "Ali",
@@ -76,13 +76,12 @@ function House() {
     },
   ];
 
-
   return (
     <div className={styles.container}>
       <div className={styles.top}>
-        <img src={img} className={styles.img} alt="House" />
+        <img src={img} className={styles.img} alt="Donate" />
         <div className={styles.heroBackgrd}></div>
-        <h1 className={styles.h1}>Find safe shelter, Offer a Home.</h1>
+        <h1 className={styles.h1}>Give, Donate, or Sell to Make a Difference</h1>
         <div className={styles.filter}>
           {/* Filter inputs */}
           <div className={styles.holder}>
@@ -106,15 +105,19 @@ function House() {
           <div className={styles.holder}>
             <h3 className={styles.h3}>Max price</h3>
             <select className={styles.select}>
-              <option className={styles.option}>For Sale</option>
+              <option className={styles.option}>For Sell</option>
               <option className={styles.option}>For Rent</option>
             </select>
           </div>
-          <button className={styles.button}> Reset</button>
+          <button className={styles.button}>Reset</button>
         </div>
       </div>
-      <div className={styles.btnHolder}>
-      <button 
+
+      {/* Donation posts or requests */}
+      <div className={styles.bottom2}>
+        {/* Tab buttons for Posts and Requests */}
+        <div className={styles.buttons}>
+          <button 
             className={`${styles.btn} ${activeButton === 'Posts' ? styles.active : ''}`} 
             onClick={() => setActiveButton('Posts')}
           >
@@ -126,48 +129,47 @@ function House() {
           >
             Requests
           </button>
-      </div>
-      <div className={styles.bottom}>
+        </div>
 
-        {/* Step 2: Map over the house data */}
-        {activeButton ==="Posts" && houses.map((house, index) => (
-          <div className={styles.card} key={index}>
-            <img src={img} className={styles.image} alt="House" />
-            <div className={styles.cardBottom}>
-              <div className={styles.locHolder}>
-                <div className={styles.location1}>
-                  <LocationOnIcon style={{ opacity: "0.5" }} />
-                  <p className={styles.location}>{house.location}</p>
-                </div>
-                <div className={styles.location1}>
-                  <PhoneIcon style={{ opacity: "0.5" }} />
-                  <p className={styles.location}>{house.phoneNumber}</p>
-                </div>
-              </div>
-              <div className={styles.bottom2}>
-                <div className={styles.price}>
-                  <BedIcon style={{ opacity: "0.5" }} />
-                  <p style={{ fontSize: "17px" }}>{house.bedrooms}</p>
-                </div>
-                <div className={styles.price}>{house.houseSpace}</div>
-                <div className={styles.price}>
-                  <AttachMoneyIcon />
-                  <p>{house.price}</p>
-                </div>
-              </div>
-              <div className={styles.check}>
-                <p>Check profile</p>
-                <ArrowForwardIcon />
+
+        {activeButton === 'Posts' && donations.map((donation, index) => (
+          <div className={styles.post} key={index}>
+
+            <div className={styles.profile}>
+              <img src={img} className={styles.image} alt="Profile" />
+              <div className={styles.name}>
+                <h3 className={styles.h4}>{donation.donorName}</h3>
+                <p className={styles.time}>{donation.timeAgo}</p>
               </div>
             </div>
+
+            <div className={styles.holder2}>
+            <p className={styles.loc}><LocationOnIcon />{donation.location}</p>
+
+              <div className={styles.number}>
+                <PhoneIcon />
+                {donation.phoneNumber}
+              </div>
+              {donation.price > 0 && (
+                <div className={styles.price}>
+                  <AttachMoneyIcon />
+                  {donation.price}
+                </div>
+              )}
+            </div>
+
+            <p className={styles.desc}>{donation.description}</p>
+                
+            {donation.postImage && <img src={donation.postImage} className={styles.postImage} alt="Donation Post" />}
           </div>
         ))}
-      </div>
-            {activeButton === 'Requests' && requests.map((request, index) => (
-          <div className={styles.post1} key={index}>
+
+        {/* Requests (without images) */}
+        {activeButton === 'Requests' && requests.map((request, index) => (
+          <div className={styles.post} key={index}>
             {/* Single request without image */}
             <div className={styles.profile}>
-              <img src={img} className={styles.image1} alt="Profile" />
+              <img src={img} className={styles.image} alt="Profile" />
               <div className={styles.name}>
                 <h3 className={styles.h4}>{request.donorName}</h3>
                 <p className={styles.time}>{request.timeAgo}</p>
@@ -181,12 +183,20 @@ function House() {
                 <PhoneIcon />
                 {request.phoneNumber}
               </div>
+              {/* {request.price > 0 && (
+                <div className={styles.price}>
+                  <AttachMoneyIcon />
+                  {request.price}
+                </div>
+              )} */}
             </div>
+
             <p className={styles.desc}>{request.description}</p>
           </div>
         ))}
+      </div>
     </div>
   );
 }
 
-export default House;
+export default Donate;

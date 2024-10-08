@@ -38,3 +38,9 @@
     font-size: 30px;
     font-weight: 500;
 }
+.btn{
+    height: 2rem;
+    width: 5rem;
+    border: none;
+    cursor: pointer;
+}

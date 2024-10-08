@@ -10,9 +10,12 @@ function Navbar() {
             HopeLink
         </div>
         <ul className={styles.navRight}>
+        <li ><a href="/" className={styles.li}>Home</a></li>
           <li ><a href="/house" className={styles.li}>Find House</a></li>
-          <li ><a href="#" className={styles.li}>Donate</a></li>
+          <li ><a href="/donate" className={styles.li}>Donate</a></li>
           <li ><a href="#" className={styles.li}>Volunteer</a></li>
+         <a href='/login'> <button className={styles.btn}>Login</button></a>
+
         </ul>
       </nav>
     </div>

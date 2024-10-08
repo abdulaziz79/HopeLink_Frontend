@@ -42,6 +42,7 @@
     font-size: 60px;
     font-weight: 300;
     margin-top: -1rem;
+    text-decoration: none;
 }
 .cardImage{
     width: 33%;
@@ -66,4 +67,8 @@
 }
 .text{
     font-size: 20px;
+}
+.link{
+    text-decoration: none;
+    color: inherit;
 }
