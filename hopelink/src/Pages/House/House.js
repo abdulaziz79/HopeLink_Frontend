@@ -127,6 +127,13 @@ function House() {
             Requests
           </button>
       </div>
+      {activeButton ==="Posts" && <div className={styles.add}>
+      List a house <button className={styles.btnPost}>+</button>
+      </div>}
+      {activeButton ==="Requests" && <div className={styles.add}>
+      Ask for a house <button className={styles.btnPost}>+</button>
+      </div>}
+      
       <div className={styles.bottom}>
 
         {/* Step 2: Map over the house data */}

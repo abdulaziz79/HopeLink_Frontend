@@ -87,7 +87,7 @@
 .bottom{
     width: 59%;
     margin: auto;
-    margin-top: 3rem;
+    margin-top: 2rem;
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
@@ -125,6 +125,7 @@
     /* padding: 10px; */
     margin: auto;
     border-radius: 5px;
+    margin-top: 1rem;
 }
 .image{
     width: 5rem;
@@ -198,7 +199,37 @@
 }
 .bottom2{
     display: flex;
-    gap: 2rem;
+    /* gap: 1rem; */
     flex-direction: column;
 
+}
+.btnPost{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 25px;
+    font-style: italic;
+    background-color: transparent;
+    color: blue;
+    height: 3rem;
+    border: 1px solid rgba(0, 0, 255, 0.42);
+    width: 6rem;
+    border-radius: 10px;
+    cursor: pointer;
+
+}
+.add{
+    width: 100%;
+    display: flex;
+    margin-top: 0.5rem;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    color: rgba(0, 0, 255, 0.652);
+
+}
+.btnPost:hover{
+background-color: rgba(0, 0, 255, 0.478);
+color: white;
+border: none;
 }

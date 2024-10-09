@@ -5,6 +5,7 @@ import Layout from "./Layout";
 import House from "../Pages/House/House";
 import Donate from "../Pages/Donate/Donate";
 import Register from "../Pages/Register/Register";
+import Profile from "../Pages/Profile/Profile";
 
 
 const Router = ()=>{
@@ -18,6 +19,7 @@ const Router = ()=>{
                 <Route path="/" element = {<Home />} />
                 <Route path="/house" element ={<House />} />
                 <Route path="/donate" element ={<Donate />} />
+                <Route path="/profile" element ={<Profile />} />
                 </Route>
 
             </Routes>

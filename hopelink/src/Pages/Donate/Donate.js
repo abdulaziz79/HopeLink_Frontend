@@ -9,7 +9,7 @@ import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 function Donate() {
   const [activeButton, setActiveButton] = useState('Posts');
 
-  // Donation posts data (with optional images)
+
   const donations = [
     {
       donorName: "Abdelaziz",
@@ -130,6 +130,12 @@ function Donate() {
             Requests
           </button>
         </div>
+        {activeButton ==="Posts" && <div className={styles.add}>
+      Donate / Sell <button className={styles.btnPost}>+</button>
+      </div>}
+      {activeButton ==="Requests" && <div className={styles.add}>
+      Ask for something <button className={styles.btnPost}>+</button>
+      </div>}
 
 
         {activeButton === 'Posts' && donations.map((donation, index) => (
