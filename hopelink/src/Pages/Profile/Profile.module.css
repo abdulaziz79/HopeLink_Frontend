@@ -317,38 +317,72 @@
         border-radius: 0;
     }
     .desc{
-        top: -7rem;
-        height: 27vh;
+        top: -11rem;
+        height: 32vh;
+        flex-direction: column;
+        justify-content: flex-end;
+        align-items: end;
+        width: 100%;
+        background-color: transparent;
+        backdrop-filter: blur(0);
+        /* height: 10%; */
     }
     .left{
-        flex-wrap: wrap;
+        /* flex-wrap: wrap; */
         gap: 0.5rem;
         font-size: 15px;
+        display: flex;
+        flex-direction: row;
+        width: 70%;
+        justify-content: flex-end;
 
     }
     .center{
-        width: 4%;
+        width: 95%;
         font-size: 15px;
+        display: flex;
+        justify-content: flex-start;
+        align-items: start;
+        height: 3rem;
+        /* margin-left: 20rem; */
     }
     .right{
-        flex-wrap: wrap;
+        /* flex-wrap: wrap; */
         gap: 0;
-        flex-direction: column-reverse;
-        justify-content: space-around;
+        /* flex-direction: column-reverse; */
+        justify-content: flex-start;
         font-size: 12px;
-        word-wrap: break-word;
-        max-width: 200px; /* Adjust as needed */
-        word-wrap: break-word; /* Allows breaking words */
-        word-break: break-all; /* Ensures breaking at any character */
-        white-space: normal; /* Ensure normal wrapping */
+        width: 93%;
+        color: white;
+        height: 7rem;
+
+    }
+    .top{
+        height: 25rem;
+        width: 100%;
+        border-radius: 0;
     }
     .profile{
-        top: 38%;
+        top: 42%;
+        left: 17%;
+        width: 7rem;
+        height: 7rem;
     }
     .singleDesc{
         border-right: none;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.469);
+        /* border-bottom: 1px solid rgba(255, 255, 255, 0.469); */
         padding: 0;
         width: 10rem;
+        flex-direction: column-reverse;
+    }
+    .heroBackgrd{
+        border-radius: 0;
+        background-color: rgba(8, 8, 50, 0.551);
+    }
+    .cover{
+        border-radius: 0;
+    }
+    .Bottom{
+        margin: 0px;
     }
   }
