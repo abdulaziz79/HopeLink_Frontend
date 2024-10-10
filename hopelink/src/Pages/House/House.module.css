@@ -284,3 +284,119 @@ background-color: rgba(0, 0, 255, 0.478);
 color: white;
 border: none;
 }
+
+@media screen and (max-width :1700px) {
+    .bottom{
+        width: 70%;
+    }
+}
+@media screen and (max-width :1544px) {
+    .bottom{
+        width: 77%;
+    }
+}
+@media screen and (max-width :1405px) {
+    .bottom{
+        width: 82%;
+    }
+}
+@media screen and (max-width :1320px) {
+    .bottom{
+        width: 90%;
+    }
+    .h1{
+        font-size: 30px;
+    }
+}
+@media screen and (max-width :1204px) {
+    .bottom{
+        width: 70%;
+    }
+    .filter{
+        width: 80%;
+        left: 10.5%;
+    }
+}
+@media screen and (max-width :1019px) {
+    .bottom{
+        width: 80%;
+    }
+    .h1{
+        font-size: 24px;
+    }
+}
+@media screen and (max-width :892px) {
+    .bottom{
+        width: 90%;
+    }
+}
+@media screen and (max-width :795px) {
+    .bottom{
+        width: 70%;
+        justify-content: center;
+    }
+    .filter{
+        width: 90%;
+        left: 5%;
+    }
+}
+@media screen and (max-width :540px) {
+    .filter{
+        width: 100%;
+        left: 0;
+        padding-left: 6px;
+        padding-right: 6px;
+    }
+}
+@media screen and (max-width :450px) {
+    .bottom{
+        width: 100%;
+    }
+    .card{
+        width: 95%;
+    }
+    .filter{
+        flex-wrap: wrap;
+        height: 13rem;
+        bottom: 0;
+        
+    }
+    .h3{
+        font-size: 15px;
+    }
+    .holder{
+        height: 5rem;
+        width: 8rem;
+        justify-content: center;
+        
+
+    }
+}
+@media screen and (max-width :410px) {
+    .holder{
+        border-right: 0;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.405);
+    }
+    .filter{
+        padding-left: 2rem;
+        padding-right: 2rem;
+        bottom: 0;
+    }
+    .h1{
+        top: 10rem;
+        font-size: 20px;
+    }
+    .button{
+        /* margin-right: 2.4rem; */
+        width: 8rem;
+        height: 3.5rem;
+    }
+}
+@media screen and (max-width :350px) {
+    .bottom{
+        width: 100%;
+    }
+    .card{
+        width: 100%;
+    }
+}
