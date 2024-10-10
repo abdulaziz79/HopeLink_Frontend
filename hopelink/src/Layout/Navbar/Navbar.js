@@ -14,9 +14,9 @@ function Navbar() {
           <li ><a href="/house" className={styles.li}>Find House</a></li>
           <li ><a href="/donate" className={styles.li}>Donate</a></li>
           <li ><a href="#" className={styles.li}>Volunteer</a></li>
-         <a href='/login'> <button className={styles.btn}>Login</button></a>
 
         </ul>
+         <a href='/login'> <button className={styles.btn}>Login</button></a>
       </nav>
     </div>
   )

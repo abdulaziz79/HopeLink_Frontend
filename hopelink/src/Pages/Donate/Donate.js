@@ -1,14 +1,18 @@
 import React, { useState } from 'react';
 import styles from "./Donate.module.css";
 import img from "../../assets/images/donate3.jpg";  // Profile image
-import donationImg from "../../assets/images/donate3.jpg";  // Reusing the test image for posts
+import donationImg from "../../assets/images/donate2.jpg";  // Reusing the test image for posts
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import PhoneIcon from '@mui/icons-material/Phone';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 
 function Donate() {
   const [activeButton, setActiveButton] = useState('Posts');
+  const [imageBig, setImageBig] = useState(null); 
 
+  const handleImageClick = (image) => {
+    setImageBig(image); 
+  };
 
   const donations = [
     {
@@ -36,7 +40,7 @@ function Donate() {
       price: 0, 
       description: "Old books for high school students.",
       timeAgo: "3 hours ago",
-      postImage: donationImg,
+      postImage: img,
     }
   ];
 
@@ -166,7 +170,14 @@ function Donate() {
 
             <p className={styles.desc}>{donation.description}</p>
                 
-            {donation.postImage && <img src={donation.postImage} className={styles.postImage} alt="Donation Post" />}
+            {donation.postImage && <img src={donation.postImage} onClick={() => handleImageClick(donation.postImage)} className={styles.postImage} alt="Donation Post" />}
+            
+            {imageBig && (
+          <div className={styles.imageModal} onClick={() => setImageBig(null)}>
+            <img src={imageBig} className={styles.enlargedImage} alt="Enlarged" />
+            <div className={styles.closeButton} onClick={() => setImageBig(null)}>X</div>
+          </div>
+        )}
           </div>
         ))}
 

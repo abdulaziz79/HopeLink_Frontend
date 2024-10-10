@@ -44,3 +44,25 @@
     border: none;
     cursor: pointer;
 }
+@media screen and (max-width :600px) {
+    .navRight{
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        gap: 0rem;
+        justify-content: space-around;
+        letter-spacing: -1px;
+        background-color: white;
+        /* color: black; */
+        width: 100%;
+        height: 4rem;
+        display: flex;
+        /* justify-content: center; */
+        align-items: center;
+    }
+    .li{
+        color: rgba(0, 0, 0, 0.685);
+        font-weight: 500;
+    }
+}
