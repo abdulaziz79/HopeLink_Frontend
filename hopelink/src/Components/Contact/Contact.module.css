@@ -86,3 +86,85 @@
     color: white;
     margin-top: 1rem;
 }
+@media screen and (max-width :1300px) {
+    .right{
+        width: 38%;
+    }
+}
+@media screen and (max-width :1110px) {
+    .leftBottom{
+        flex-wrap: wrap;
+    }
+    .right{
+        width: 45%;
+    }
+    .left{
+        width: 45%;
+        gap: 2rem;
+    }
+    .h1{
+        line-height: 40px;
+        font-size: 40px;
+    }
+    .text{
+        font-size: 16px;
+        line-height: 20px;
+    }
+}
+
+@media screen and (max-width :930px) {
+    .container{
+        flex-direction: column-reverse;
+    }
+    .right{
+        width: 80%;
+        margin: auto;
+        height: fit-content;
+        padding: 30px 1rem 30px 1rem;
+
+    }
+    .left{
+        width: 95%;
+        margin: auto;
+    }
+    .leftBottom{
+        flex-direction: row;
+        flex-wrap: nowrap;
+    }
+    
+}
+@media screen and (max-width :700px) {
+    .right{
+        width: 100%;
+        height: fit-content;
+        padding: 30px 1rem 30px 1rem;
+    }
+    .container{
+        padding: 10px;
+        padding-bottom: 6rem;
+    }
+    .bottomText{
+        font-size: 11px;
+        line-height: 14px;
+        padding: 0 10px 0 7px;
+    }
+    .topH1{
+        font-size: 30px;
+    }
+    .topP{
+        font-size: 14px;
+    }
+    .leftTop{
+        width: 97%;
+    }
+    .topInput{
+        height: 2.4rem;
+    }
+    .input{
+        height: 2.4rem;
+    }
+    .textarea{
+        height: 7.5rem;
+    }
+
+}

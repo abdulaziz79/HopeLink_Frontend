@@ -339,6 +339,9 @@ border: none;
         width: 90%;
         left: 5%;
     }
+    .container{
+        padding-bottom: 5rem;
+    }
 }
 @media screen and (max-width :540px) {
     .filter{
@@ -354,6 +357,9 @@ border: none;
     }
     .card{
         width: 95%;
+    }
+    .input{
+        width: 100%;
     }
     .filter{
         flex-wrap: wrap;
@@ -371,6 +377,10 @@ border: none;
         
 
     }
+    .h1{
+        top: 10rem;
+        font-size: 20px;
+    }
 }
 @media screen and (max-width :410px) {
     .holder{
@@ -382,10 +392,7 @@ border: none;
         padding-right: 2rem;
         bottom: 0;
     }
-    .h1{
-        top: 10rem;
-        font-size: 20px;
-    }
+  
     .button{
         /* margin-right: 2.4rem; */
         width: 8rem;
@@ -398,5 +405,22 @@ border: none;
     }
     .card{
         width: 100%;
+    }
+}
+@media screen and (max-width :319px) {
+    .holder{
+        width: 100%;
+    }
+    .filter{
+        height: 20rem;
+        bottom: -8rem;
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+    .button{
+        width: 100%;
+    }
+    .top{
+        margin-bottom: 9rem;
     }
 }

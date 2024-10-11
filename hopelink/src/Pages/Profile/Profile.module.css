@@ -317,15 +317,20 @@
         border-radius: 0;
     }
     .desc{
-        top: -11rem;
-        height: 32vh;
+        top: 14rem;
+        height: 20rem;
         flex-direction: column;
         justify-content: flex-end;
         align-items: end;
         width: 100%;
         background-color: transparent;
         backdrop-filter: blur(0);
+        /* position: absolute; */
         /* height: 10%; */
+    }
+    .bottom{
+        position: static;
+
     }
     .left{
         /* flex-wrap: wrap; */
@@ -334,7 +339,7 @@
         display: flex;
         flex-direction: row;
         width: 70%;
-        justify-content: flex-end;
+        justify-content: center;
         margin-bottom: 1.5rem;
 
     }
@@ -348,15 +353,17 @@
         /* margin-left: 20rem; */
     }
     .right{
-        /* flex-wrap: wrap; */
-        gap: 0;
+        flex-wrap: wrap;
+        gap: 5px;
         /* flex-direction: column-reverse; */
         justify-content: flex-start;
+        /* margin-left: 1rem; */
         font-size: 16px;
-        width: 91%;
+        width: 100%;
         color: white;
         height: 7rem;
         padding-bottom: 2rem;
+        padding-left: 1rem;
 
     }
     .top{
@@ -375,6 +382,7 @@
         /* border-bottom: 1px solid rgba(255, 255, 255, 0.469); */
         padding: 0;
         width: 10rem;
+        width: fit-content;
         flex-direction: column-reverse;
     }
     .heroBackgrd{
@@ -383,6 +391,8 @@
     }
     .cover{
         border-radius: 0;
+        position: relative;
+
     }
     .Bottom{
         margin: 0px;
