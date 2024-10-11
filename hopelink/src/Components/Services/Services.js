@@ -2,7 +2,7 @@ import React from 'react'
 import styles from "./Services.module.css"
 import img from "../../assets/images/hero.jpg"
 import home from "../../assets/images/home.jpg"
-import donate from "../../assets/images/donate.jpg"
+import donate from "../../assets/images/donate3.jpg"
 import volunteer from "../../assets/images/volunteer.jpg"
 import request from "../../assets/images/request.jpg"
 import {Link} from "react-router-dom"
@@ -15,7 +15,7 @@ function Services() {
       <div className={styles.all}> 
         <div className={styles.left}>
         <Link to="/house" className={styles.link} >
-          <div className={styles.card}>
+          <div className={styles.card1}>
               <div className={styles.star}>*</div>
             <div className={styles.cardText}>
               
@@ -24,25 +24,14 @@ function Services() {
             </div>
             <div className={styles.cardImage}>
               <img src={home} className={styles.img} />
+              <div className={styles.heroBackgrd}></div>
             </div>
           </div>
             </Link>
-            <Link to="/donate" className={styles.link} >
-          <div className={styles.card}>
-              <div className={styles.star}>*</div>
-            <div className={styles.cardText}>
-              
-              <h1 className={styles.h1}>DONATE - SELL</h1>
-              <p className={styles.p}>Share essential supplies or financial support to help those in need rebuild their lives..</p>
-            </div>
-            <div className={styles.cardImage}>
-              <img src={donate} className={styles.img} />
-            </div>
-          </div>
-          </Link>
+         
 
 
-          <div className={styles.card}>
+          <div className={styles.card3}>
               <div className={styles.star}>*</div>
             <div className={styles.cardText}>
               
@@ -51,9 +40,24 @@ function Services() {
             </div>
             <div className={styles.cardImage}>
               <img src={volunteer} className={styles.img} />
+              <div className={styles.heroBackgrd3}></div>
             </div>
           </div>
-          <div className={styles.card}>
+          <Link to="/donate" className={styles.link} >
+          <div className={styles.card2}>
+              <div className={styles.star}>*</div>
+            <div className={styles.cardText}>
+              
+              <h1 className={styles.h1}>DONATE - SELL</h1>
+              <p className={styles.p}>Share essential supplies or financial support to help those in need rebuild their lives..</p>
+            </div>
+            <div className={styles.cardImage}>
+              <img src={donate} className={styles.img} />
+              <div className={styles.heroBackgrd2}></div>
+            </div>
+          </div>
+          </Link>
+          <div className={styles.card4}>
               <div className={styles.star}>*</div>
             <div className={styles.cardText}>
               
@@ -62,6 +66,7 @@ function Services() {
             </div>
             <div className={styles.cardImage}>
               <img src={request} className={styles.img} />
+              <div className={styles.heroBackgrd4}></div>
             </div>
           </div>
         </div>
