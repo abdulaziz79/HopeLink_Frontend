@@ -166,7 +166,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    /* gap: 1rem; */
+    gap: 1rem;
 }
 .check{
     display: flex;
@@ -285,6 +285,21 @@ color: white;
 border: none;
 }
 
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5); 
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
 @media screen and (max-width :1700px) {
     .bottom{
         width: 70%;
@@ -324,6 +339,9 @@ border: none;
     .h1{
         font-size: 24px;
     }
+    .post1{
+        width: 50%;
+    }
 }
 @media screen and (max-width :892px) {
     .bottom{
@@ -341,6 +359,9 @@ border: none;
     }
     .container{
         padding-bottom: 5rem;
+    }
+    .post1{
+        width: 60%;
     }
 }
 @media screen and (max-width :540px) {
@@ -380,6 +401,10 @@ border: none;
     .h1{
         top: 10rem;
         font-size: 20px;
+    }
+    .post1{
+        width: 100%;
+        margin-bottom: 0.4rem;
     }
 }
 @media screen and (max-width :410px) {

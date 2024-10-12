@@ -29,7 +29,7 @@ function Navbar() {
             </a>
           </li>
           <li>
-            <a href="#" className={styles.li}>
+            <a href="/volunteer" className={styles.li}>
               <VolunteerIcon className={styles.icon} fontSize="large" /> {/* Volunteer Icon */}
               <span className={styles.text}>Volunteer</span>
             </a>

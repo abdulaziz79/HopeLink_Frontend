@@ -1,18 +1,14 @@
 import React, { useState } from 'react';
-import styles from "./Donate.module.css";
-import img from "../../assets/images/donate3.jpg";  // Profile image
-import donationImg from "../../assets/images/donate2.jpg";  // Reusing the test image for posts
+import styles from "./Volunteer.module.css";
+import img from "../../assets/images/donate3.jpg";  
+import donationImg from "../../assets/images/donate2.jpg";  
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import PhoneIcon from '@mui/icons-material/Phone';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
-import Sell from './Sell/Sell';
-import Request from './Request/Request';
 
-function Donate() {
+function Volunteer() {
   const [activeButton, setActiveButton] = useState('Posts');
   const [imageBig, setImageBig] = useState(null); 
-  const [isOverlay, setIsOverlay] =useState(false)
-  const [isOverlayReq, setIsOverlayReq] =useState(false)
 
   const handleImageClick = (image) => {
     setImageBig(image); 
@@ -89,36 +85,7 @@ function Donate() {
       <div className={styles.top}>
         <img src={img} className={styles.img} alt="Donate" />
         <div className={styles.heroBackgrd}></div>
-        <h1 className={styles.h1}>Give, Donate, or Sell to Make a Difference</h1>
-        <div className={styles.filter}>
-          {/* Filter inputs */}
-          <div className={styles.holder}>
-            <h3 className={styles.h3}>Location</h3>
-            <input
-              type="location"
-              name="location"
-              placeholder="Enter your location"
-              className={styles.input}
-            />
-          </div>
-          <div className={styles.holder}>
-            <h3 className={styles.h3}>Min price</h3>
-            <input
-              type="minPrice"
-              name="minPrice"
-              placeholder="Enter min price"
-              className={styles.input}
-            />
-          </div>
-          <div className={styles.holder}>
-            <h3 className={styles.h3}>Max price</h3>
-            <select className={styles.select}>
-              <option className={styles.option}>For Sell</option>
-              <option className={styles.option}>For Rent</option>
-            </select>
-          </div>
-          <button className={styles.button}>Reset</button>
-        </div>
+        <h1 className={styles.h1}>Lend a Hand, Make a Difference</h1>
       </div>
 
       {/* Donation posts or requests */}
@@ -139,14 +106,14 @@ function Donate() {
           </button>
         </div>
         {activeButton ==="Posts" && <div className={styles.add}>
-      Donate / Sell <button className={styles.btnPost} onClick={()=>setIsOverlay(true)}>+</button>
+      Donate / Sell <button className={styles.btnPost}>+</button>
       </div>}
       {activeButton ==="Requests" && <div className={styles.add}>
-      Ask for something <button className={styles.btnPost} onClick={()=>setIsOverlayReq(true)} >+</button>
+      Ask for something <button className={styles.btnPost}>+</button>
       </div>}
 
 
-        {activeButton === 'Posts' && donations.map((donation, index) => (
+        {activeButton === 'Requests' && donations.map((donation, index) => (
           <div className={styles.post} key={index}>
 
             <div className={styles.profile}>
@@ -164,12 +131,7 @@ function Donate() {
                 <PhoneIcon />
                 {donation.phoneNumber}
               </div>
-              {donation.price > 0 && (
-                <div className={styles.price}>
-                  <AttachMoneyIcon />
-                  {donation.price}
-                </div>
-              )}
+  
             </div>
 
             <p className={styles.desc}>{donation.description}</p>
@@ -185,10 +147,10 @@ function Donate() {
           </div>
         ))}
 
-        {/* Requests (without images) */}
-        {activeButton === 'Requests' && requests.map((request, index) => (
+  
+        {activeButton === 'Posts' && requests.map((request, index) => (
           <div className={styles.post} key={index}>
-            {/* Single request without image */}
+
             <div className={styles.profile}>
               <img src={img} className={styles.image} alt="Profile" />
               <div className={styles.name}>
@@ -216,11 +178,8 @@ function Donate() {
           </div>
         ))}
       </div>
-     { isOverlay && <section className={styles.overlay}><Sell setIsOverlay={setIsOverlay} /></section>}
-     { isOverlayReq && <section className={styles.overlay}><Request setIsOverlayReq={setIsOverlayReq} /></section>}
-
     </div>
   );
 }
 
-export default Donate;
+export default Volunteer;

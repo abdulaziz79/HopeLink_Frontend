@@ -7,9 +7,14 @@ import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import BedIcon from '@mui/icons-material/Bed';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { useState } from "react";
+import AddHouse from "./AddHouse/AddHouse";
+import Request from "./Request/Request";
 
 function House() {
   const [activeButton, setActiveButton] = useState('Posts');
+  const [isOverlay, setIsOverlay] = useState(false);
+  const [isOverlayReq, setIsOverlayReq] = useState(false);
+
 
   const houses = [
     {
@@ -128,15 +133,16 @@ function House() {
           </button>
       </div>
       {activeButton ==="Posts" && <div className={styles.add}>
-      List a house <button className={styles.btnPost}>+</button>
+      List a house <button className={styles.btnPost} onClick={()=>setIsOverlay(true)}>+</button>
       </div>}
       {activeButton ==="Requests" && <div className={styles.add}>
-      Ask for a house <button className={styles.btnPost}>+</button>
+      Ask for a house <button className={styles.btnPost} onClick={()=>setIsOverlayReq(true)} >+</button>
       </div>}
       
       <div className={styles.bottom}>
 
-        {/* Step 2: Map over the house data */}
+
+
         {activeButton ==="Posts" && houses.map((house, index) => (
           <div className={styles.card} key={index}>
             <img src={img} className={styles.image} alt="House" />
@@ -192,6 +198,8 @@ function House() {
             <p className={styles.desc}>{request.description}</p>
           </div>
         ))}
+        {isOverlay && <section className={styles.overlay}><AddHouse setIsOverlay={setIsOverlay} /></section>}
+        {isOverlayReq && <section className={styles.overlay}><Request setIsOverlayReq={setIsOverlayReq} /></section>}
     </div>
   );
 }
