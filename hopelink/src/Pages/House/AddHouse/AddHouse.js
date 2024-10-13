@@ -1,16 +1,24 @@
 import React, { useState } from 'react';
 import styles from './AddHouse.module.css';
+import axios from 'axios';
+import { useContext } from 'react';
+import { UserContext } from '../../../UseContext/UserContext';
 
 function AddHouse({ setIsOverlay }) {
+  const { user } = useContext(UserContext); 
+
   // Form state
   const [formData, setFormData] = useState({
     location: '',
-    phoneNumber: '',
+    phone: '',
     bedrooms: 0,
-    houseSize: '',
+    houseSpace: '',
     price: '',
+    user :user && user.userId,
     images: []
   });
+
+  console.log(user)
 
   const [error, setError] = useState(null);
 
@@ -31,23 +39,33 @@ function AddHouse({ setIsOverlay }) {
   };
 
   // Handle form submission
-  const handleSubmit = (e) => {
+  const handleSubmit =async (e) => {
     e.preventDefault();
 
-    if (!formData.location || !formData.phoneNumber || !formData.price) {
+    if (!formData.location || !formData.phone || !formData.price) {
       setError('All fields are required.');
       return;
     }
 
-    if (formData.images.length === 0) {
-      setError('Please upload at least one image.');
-      return;
+    try {
+      const response = await axios.post (`${process.env.REACT_APP_PATH}/houses/add`,formData, {headers:{'Content-Type':"multipart/form-data"}} )
+      if(response){
+        setFormData({
+          location: '',
+          image: '',
+          phone: '',
+          bedrooms: '',
+          houseSpace:'',
+          price:"",
+          userId:user && user.userId, 
+        });
+        console.log('Form Data Submitted:', formData);
+        setIsOverlay(false);
+      }
+    } catch (error) {
+      console.log(error.message)
     }
 
-    console.log('Form Data Submitted:', formData);
-
-
-    setIsOverlay(false);
   };
 
   return (
@@ -70,8 +88,8 @@ function AddHouse({ setIsOverlay }) {
           <label>Phone Number:</label>
           <input
             type="tel"
-            name="phoneNumber"
-            value={formData.phoneNumber}
+            name="phone"
+            value={formData.phone}
             onChange={handleChange}
             required
             placeholder="e.g., 79123456"
@@ -94,8 +112,8 @@ function AddHouse({ setIsOverlay }) {
           <label>House Size (in square meters):</label>
           <input
             type="text"
-            name="houseSize"
-            value={formData.houseSize}
+            name="houseSpace"
+            value={formData.houseSpace}
             onChange={handleChange}
             placeholder="e.g., 200 m²"
           />

@@ -1,14 +1,24 @@
 import React, { useState } from 'react';
 import styles from "./Volunteer.module.css";
-import img from "../../assets/images/donate3.jpg";  
+import img from "../../assets/images/volunteer1.jpg";  
 import donationImg from "../../assets/images/donate2.jpg";  
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import PhoneIcon from '@mui/icons-material/Phone';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import PostVolunteer from './PostVolunteer/PostVolunteer';
+import Request from './Request/Request';
+import { useContext } from 'react';
+import { UserContext } from '../../UseContext/UserContext';
+import { useNavigate } from 'react-router-dom';
 
 function Volunteer() {
   const [activeButton, setActiveButton] = useState('Posts');
   const [imageBig, setImageBig] = useState(null); 
+  const [isOverlay, setIsOverlay] =useState(false)
+  const [isOverlayReq, setIsOverlayReq] =useState(false)
+  const { user } = useContext(UserContext)
+  const navigate = useNavigate()
+
 
   const handleImageClick = (image) => {
     setImageBig(image); 
@@ -106,10 +116,10 @@ function Volunteer() {
           </button>
         </div>
         {activeButton ==="Posts" && <div className={styles.add}>
-      Donate / Sell <button className={styles.btnPost}>+</button>
+      Offer a Service <button className={styles.btnPost} onClick={()=>user ? setIsOverlay(true) : navigate('/login')}>+</button>
       </div>}
       {activeButton ==="Requests" && <div className={styles.add}>
-      Ask for something <button className={styles.btnPost}>+</button>
+      Request a Service <button className={styles.btnPost} onClick={()=> user ? setIsOverlayReq(true) : navigate('/login')}>+</button>
       </div>}
 
 
@@ -178,6 +188,8 @@ function Volunteer() {
           </div>
         ))}
       </div>
+      { isOverlay && <section className={styles.overlay}><PostVolunteer setIsOverlay={setIsOverlay} /></section>}
+      { isOverlayReq && <section className={styles.overlay}><Request setIsOverlayReq={setIsOverlayReq} /></section>}
     </div>
   );
 }

@@ -9,12 +9,16 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { useState } from "react";
 import AddHouse from "./AddHouse/AddHouse";
 import Request from "./Request/Request";
+import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { UserContext } from "../../UseContext/UserContext";
 
 function House() {
   const [activeButton, setActiveButton] = useState('Posts');
   const [isOverlay, setIsOverlay] = useState(false);
   const [isOverlayReq, setIsOverlayReq] = useState(false);
-
+  const {user} = useContext(UserContext)
+  const navigate = useNavigate()
 
   const houses = [
     {
@@ -133,10 +137,10 @@ function House() {
           </button>
       </div>
       {activeButton ==="Posts" && <div className={styles.add}>
-      List a house <button className={styles.btnPost} onClick={()=>setIsOverlay(true)}>+</button>
+      List a house <button className={styles.btnPost} onClick={()=> user ? setIsOverlay(true) : navigate('/login')}>+</button>
       </div>}
       {activeButton ==="Requests" && <div className={styles.add}>
-      Ask for a house <button className={styles.btnPost} onClick={()=>setIsOverlayReq(true)} >+</button>
+      Ask for a house <button className={styles.btnPost} onClick={()=> user ? setIsOverlayReq(true) : navigate('/login')} >+</button>
       </div>}
       
       <div className={styles.bottom}>

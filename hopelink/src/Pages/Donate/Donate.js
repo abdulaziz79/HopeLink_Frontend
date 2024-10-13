@@ -7,12 +7,17 @@ import PhoneIcon from '@mui/icons-material/Phone';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import Sell from './Sell/Sell';
 import Request from './Request/Request';
+import { useContext } from 'react';
+import { UserContext } from '../../UseContext/UserContext';
+import { useNavigate } from 'react-router-dom';
 
 function Donate() {
   const [activeButton, setActiveButton] = useState('Posts');
   const [imageBig, setImageBig] = useState(null); 
   const [isOverlay, setIsOverlay] =useState(false)
   const [isOverlayReq, setIsOverlayReq] =useState(false)
+  const { user } = useContext(UserContext)
+  const navigate = useNavigate()
 
   const handleImageClick = (image) => {
     setImageBig(image); 
@@ -139,10 +144,10 @@ function Donate() {
           </button>
         </div>
         {activeButton ==="Posts" && <div className={styles.add}>
-      Donate / Sell <button className={styles.btnPost} onClick={()=>setIsOverlay(true)}>+</button>
+      Donate / Sell <button className={styles.btnPost} onClick={()=> user ? setIsOverlay(true) : navigate('/login') }>+</button>
       </div>}
       {activeButton ==="Requests" && <div className={styles.add}>
-      Ask for something <button className={styles.btnPost} onClick={()=>setIsOverlayReq(true)} >+</button>
+      Ask for something <button className={styles.btnPost} onClick={()=> user ? setIsOverlayReq(true) :navigate('/login') } >+</button>
       </div>}
 
 

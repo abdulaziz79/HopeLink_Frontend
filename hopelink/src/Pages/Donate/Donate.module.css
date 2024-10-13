@@ -368,3 +368,17 @@ border: none;
         height: 3.5rem;
     }
 }
+@media screen and (max-width :321px) {
+    .filter{
+        height: 20rem;
+    }
+    .holder{
+        width: 100%;
+    }
+    .bottom2{
+        margin-top: 10rem;
+    }
+    .filter{
+        bottom: -9rem;
+    }
+}
