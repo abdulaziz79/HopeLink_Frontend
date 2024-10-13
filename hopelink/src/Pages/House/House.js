@@ -6,20 +6,36 @@ import PhoneIcon from '@mui/icons-material/Phone';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import BedIcon from '@mui/icons-material/Bed';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AddHouse from "./AddHouse/AddHouse";
 import Request from "./Request/Request";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../UseContext/UserContext";
+import axios from "axios";
 
 function House() {
   const [activeButton, setActiveButton] = useState('Posts');
   const [isOverlay, setIsOverlay] = useState(false);
   const [isOverlayReq, setIsOverlayReq] = useState(false);
+  const [data, setData] =useState([])
   const {user} = useContext(UserContext)
   const navigate = useNavigate()
 
+  const fetchData = async()=>{
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_PATH}/houses`)
+      if(response){
+        setData(response.data.data)
+        console.log(response.data)
+      }
+    } catch (error) {
+      console.log(error.message)
+    }
+  } 
+  useEffect(()=>{
+    fetchData()
+  },[])
   const houses = [
     {
       location: "Beirut",

@@ -1,12 +1,18 @@
 import React, { useState } from 'react';
 import styles from './Sell.module.css';
+import { useContext } from 'react';
+import { UserContext } from '../../../UseContext/UserContext';
+import axios from 'axios';
 
 function Sell({ setIsOverlay }) {
+  const {user} =useContext(UserContext)
   const [formData, setFormData] = useState({
     location: '',
     phoneNumber: '',
     price: '',
-    image: null,
+    image: '',
+    userId: user&& user.userId, 
+
   });
 
   const [error, setError] = useState(null);
@@ -17,15 +23,18 @@ function Sell({ setIsOverlay }) {
   };
 
   const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    setFormData((prevData) => ({ ...prevData, image: file }));
-  };
+    setFormData((prevData) => ({
+        ...prevData,
+        image: e.target.files[0],
+    }));
+};
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!formData.location || !formData.phoneNumber || !formData.price || !formData.image) {
-      setError('All fields are required.');
-      return;
+    try {
+      const response = axios.post(`${process.env.REACT_APP_PATH}/supplies/`)
+    } catch (error) {
+      
     }
 
     console.log('Form Data Submitted:', formData);

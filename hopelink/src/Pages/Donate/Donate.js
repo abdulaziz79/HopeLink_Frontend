@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from "./Donate.module.css";
 import img from "../../assets/images/donate3.jpg";  // Profile image
 import donationImg from "../../assets/images/donate2.jpg";  // Reusing the test image for posts
@@ -10,12 +10,14 @@ import Request from './Request/Request';
 import { useContext } from 'react';
 import { UserContext } from '../../UseContext/UserContext';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 function Donate() {
   const [activeButton, setActiveButton] = useState('Posts');
   const [imageBig, setImageBig] = useState(null); 
   const [isOverlay, setIsOverlay] =useState(false)
   const [isOverlayReq, setIsOverlayReq] =useState(false)
+  const [ data, setData] =useState([])
   const { user } = useContext(UserContext)
   const navigate = useNavigate()
 
@@ -23,6 +25,20 @@ function Donate() {
     setImageBig(image); 
   };
 
+  const fetchData = async()=>{
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_PATH}/supplies`)
+      if(response){
+        setData(response.data)
+        console.log(response.data)
+      }
+    } catch (error) {
+      console.log(error.message)
+    }
+  }
+  useEffect(()=>{
+    fetchData()
+  },[])
   const donations = [
     {
       donorName: "Abdelaziz",
