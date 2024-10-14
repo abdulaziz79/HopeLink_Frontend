@@ -24,9 +24,9 @@ function House() {
 
   const fetchData = async()=>{
     try {
-      const response = await axios.get(`${process.env.REACT_APP_PATH}/houses`)
+      const response = await axios.get(`${process.env.REACT_APP_PATH}/houses`,{withCredentials:true})
       if(response){
-        setData(response.data.data)
+        setData(response.data)
         console.log(response.data)
       }
     } catch (error) {

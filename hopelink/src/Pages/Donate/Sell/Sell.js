@@ -8,12 +8,14 @@ function Sell({ setIsOverlay }) {
   const {user} =useContext(UserContext)
   const [formData, setFormData] = useState({
     location: '',
-    phoneNumber: '',
+    phone: '',
     price: '',
     image: '',
+    description:'',
     userId: user&& user.userId, 
 
   });
+
 
   const [error, setError] = useState(null);
 
@@ -29,17 +31,49 @@ function Sell({ setIsOverlay }) {
     }));
 };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    try {
-      const response = axios.post(`${process.env.REACT_APP_PATH}/supplies/`)
-    } catch (error) {
-      
-    }
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  const formDataObj = new FormData();
+  
+  // Append form data
+  formDataObj.append("description", formData.description);
+  formDataObj.append("location", formData.location);
+  formDataObj.append("phone", formData.phone);
+  formDataObj.append("price", formData.price);
+  formDataObj.append("image", formData.image);
 
-    console.log('Form Data Submitted:', formData);
-    setIsOverlay(false); 
-  };
+  try {
+    const token = user && user.token; // Assuming user has a token
+    const response = await axios.post(
+      `${process.env.REACT_APP_PATH}/supplies/add`, 
+      formDataObj, 
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          "Authorization": `Bearer ${token}` // Send token in Authorization header
+        },
+        withCredentials: true // Make sure cookies are sent if using them for authentication
+      }
+    );
+
+    if (response) {
+      setFormData({
+        description: '',
+        image: '',
+        location: '',
+        userId: user && user.userId, 
+        price: '',
+        phone: ''
+      });
+      setIsOverlay(false);
+    }
+  } catch (error) {
+    console.log(error.message);
+    setError("Failed to submit the form");
+  }
+
+  console.log('Form Data Submitted:', formData);
+};
 
   return (
     <div className={styles.sellContainer}>
@@ -61,7 +95,7 @@ function Sell({ setIsOverlay }) {
           <label>Phone Number:</label>
           <input
             type="tel"
-            name="phoneNumber"
+            name="phone"
             value={formData.phoneNumber}
             onChange={handleChange}
             required
@@ -90,7 +124,16 @@ function Sell({ setIsOverlay }) {
             required
           />
         </div>
-
+        <div className={styles.formGroup}>
+          <label>Description:</label>
+          <textarea
+            name="description"
+            value={formData.description}
+            onChange={handleChange}
+            placeholder="Describe what you need"
+            className={styles.textarea}
+          ></textarea>
+        </div>
         <div className={styles.buttonGroup}>
           <button type="submit" className={styles.submitButton}>Submit</button>
           <button

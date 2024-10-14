@@ -23,7 +23,6 @@ export const UserProvider = ({children})=>{
           );
           setUser(response.data.user);
           setUserUpdated(false);
-          console.log(response.data.user.userId)
         } catch (error) {
           if (error.response && error.response.status === 401) {
             setUser(null); 

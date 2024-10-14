@@ -14,11 +14,9 @@ function AddHouse({ setIsOverlay }) {
     bedrooms: 0,
     houseSpace: '',
     price: '',
-    user :user && user.userId,
+    userId: user && user.userId,
     images: []
   });
-
-  console.log(user)
 
   const [error, setError] = useState(null);
 
@@ -26,7 +24,6 @@ function AddHouse({ setIsOverlay }) {
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
-
 
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
@@ -39,7 +36,7 @@ function AddHouse({ setIsOverlay }) {
   };
 
   // Handle form submission
-  const handleSubmit =async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!formData.location || !formData.phone || !formData.price) {
@@ -47,25 +44,42 @@ function AddHouse({ setIsOverlay }) {
       return;
     }
 
+    const formDataToSend = new FormData();
+    // Append form fields to FormData
+    formDataToSend.append('location', formData.location);
+    formDataToSend.append('phone', formData.phone);
+    formDataToSend.append('bedrooms', formData.bedrooms);
+    formDataToSend.append('houseSpace', formData.houseSpace);
+    formDataToSend.append('price', formData.price);
+    formDataToSend.append('userId', formData.userId);
+
+    // Append images to FormData
+    formData.images.forEach((image) => {
+      formDataToSend.append('images', image);
+    });
+
     try {
-      const response = await axios.post (`${process.env.REACT_APP_PATH}/houses/add`,formData, {headers:{'Content-Type':"multipart/form-data"}} )
-      if(response){
+      const response = await axios.post(`${process.env.REACT_APP_PATH}/houses/add`, formDataToSend, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+        withCredentials: true,
+      });
+
+      if (response) {
         setFormData({
           location: '',
-          image: '',
           phone: '',
-          bedrooms: '',
-          houseSpace:'',
-          price:"",
-          userId:user && user.userId, 
+          bedrooms: 0,
+          houseSpace: '',
+          price: '',
+          userId: user && user.userId,
+          images: [],
         });
-        console.log('Form Data Submitted:', formData);
+        console.log('Form Data Submitted:', response.data);
         setIsOverlay(false);
       }
     } catch (error) {
-      console.log(error.message)
+      console.log(error.message);
     }
-
   };
 
   return (
