@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useContext } from 'react';
 import { UserContext } from '../../../UseContext/UserContext';
 
-function AddHouse({ setIsOverlay }) {
+function AddHouse({ setIsOverlay, fetchData }) {
   const { user } = useContext(UserContext); 
 
   // Form state
@@ -76,6 +76,7 @@ function AddHouse({ setIsOverlay }) {
         });
         console.log('Form Data Submitted:', response.data);
         setIsOverlay(false);
+        fetchData()
       }
     } catch (error) {
       console.log(error.message);

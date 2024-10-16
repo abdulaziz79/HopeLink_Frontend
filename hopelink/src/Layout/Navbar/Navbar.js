@@ -51,11 +51,14 @@ function Navbar() {
             </a>
           </li>
         </ul>
+        <div style={{display:"flex"}}>
         {user ?  
           <button className={styles.btn} onClick={handleLogout}>Logout</button>
          : <a href='/login'>
           <button className={styles.btn}>Login</button>
         </a>}
+        <p style={{color:"white"}}> profile</p>
+        </div>
         
       </nav>
     </div>

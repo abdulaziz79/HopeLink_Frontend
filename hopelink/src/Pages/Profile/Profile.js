@@ -1,15 +1,47 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './Profile.module.css';
 import img from '../../assets/images/profile.jpg';
 import donationImg from '../../assets/images/donate3.jpg';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import PhoneIcon from '@mui/icons-material/Phone';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import { useContext } from 'react';
+import { UserContext } from '../../UseContext/UserContext';
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
+
 
 function Profile() {
-
+  const { user } = useContext(UserContext);
+  const { id } = useParams();
+  const [houses, setHouses] = useState([]);
   const [showAllImages, setShowAllImages] = useState(Array(3).fill(false)); 
   const [imageBig, setImageBig] = useState(null); 
+
+  // Determine the userId to fetch
+  const userIdToFetch = id || (user && user.userId);
+
+  useEffect(() => {
+    const fetchRequest = async () => {
+      if (userIdToFetch) { // Check if userIdToFetch is defined
+        try {
+          const response = await axios.get(`${process.env.REACT_APP_PATH}/user/houseAndSupplies/${userIdToFetch}`);
+          if (response && response.data) {
+            setHouses(response.data);
+            console.log(response.data); // Log response data
+          }
+        } catch (error) {
+          console.log(error.message);
+        }
+      } else {
+        console.log("userIdToFetch is undefined");
+      }
+    };
+
+    fetchRequest();
+  }, [userIdToFetch]); // Add userIdToFetch as a dependency
+
+
 
   const handleShowAllImages = (index) => {
     const updatedShowAllImages = [...showAllImages];
@@ -20,36 +52,6 @@ function Profile() {
   const handleImageClick = (image) => {
     setImageBig(image); 
   };
-
-  const donations = [
-    {
-      donorName: 'Abdelaziz',
-      location: 'Tripoli',
-      phoneNumber: '79165588',
-      price: 500,
-      description: 'A used laptop in good condition, perfect for students.',
-      timeAgo: '2 days ago',
-      postImage: [img, donationImg,],
-    },
-    {
-      donorName: 'Fatima',
-      location: 'Beirut',
-      phoneNumber: '70123456',
-      price: 300,
-      description: 'Clothes for newborn babies, clean and well-packed.',
-      timeAgo: '1 day ago',
-      postImage: null, // No images for this post
-    },
-    {
-      donorName: 'Hassan',
-      location: 'Sidon',
-      phoneNumber: '78945612',
-      price: 0,
-      description: 'Old books for high school students.',
-      timeAgo: '3 hours ago',
-      postImage: [img, donationImg, img, donationImg, img, img],
-    },
-  ];
 
   return (
     <div className={styles.container}>
@@ -75,11 +77,11 @@ function Profile() {
               <p className={styles.descBottom}>5</p>
             </div>
           </div>
-          <div className={styles.center}>Abdelaziz cherkawi</div>
+          <div className={styles.center}>{user && user.name}</div>
           <div className={styles.right}>
             <div className={styles.singleDesc}>
               <p className={styles.descTp}>Email</p>
-              <p className={styles.email}>Aboudecharkawi@gmail.com</p>
+              <p className={styles.email}>{ user && user.email}</p>
             </div>
             <div className={styles.singleDesc}>
               <p className={styles.descTp}>Phone</p>
@@ -90,12 +92,12 @@ function Profile() {
       </div>
       
       <div className={styles.Bottom}>
-        {donations.map((donation, index) => (
+        {houses.map((donation, index) => (
           <div className={styles.post} key={index}>
             <div className={styles.profile1}>
               <img src={img} className={styles.image} alt="Profile" />
               <div className={styles.name}>
-                <h3 className={styles.h4}>{donation.donorName}</h3>
+                <h3 className={styles.h4}>{donation.userId.name}</h3>
                 <p className={styles.time}>{donation.timeAgo}</p>
               </div>
             </div>
@@ -104,7 +106,7 @@ function Profile() {
               <p className={styles.loc}><LocationOnIcon />{donation.location}</p>
               <div className={styles.number}>
                 <PhoneIcon />
-                {donation.phoneNumber}
+                {donation.phone}
               </div>
               {donation.price > 0 && (
                 <div className={styles.price}>
@@ -117,21 +119,21 @@ function Profile() {
             <p className={styles.desc1}>{donation.description}</p>
 
             {/* Image Display with Toggle */}
-            {donation.postImage && Array.isArray(donation.postImage) ? (
+            {donation.images && Array.isArray(donation.images) ? (
               <div className={styles.postImageContainer}>
                 {/* Show 3 images max, and toggle "show all" */}
-                {donation.postImage.slice(0, showAllImages[index] ? donation.postImage.length : 3).map((image, i) => (
+                {donation.images.slice(0, showAllImages[index] ? donation.images.length : 3).map((image, i) => (
                   <img 
-                    src={image} 
+                    src={`${process.env.REACT_APP_PATH}/images/${image}`} 
                     className={styles.postImage} 
                     alt={`Donation image ${i}`} 
                     key={i} 
-                    onClick={() => handleImageClick(image)} 
+                    onClick={() => handleImageClick(`${process.env.REACT_APP_PATH}/images/${image}`)} 
                   />
                 ))}
-                {!showAllImages[index] && donation.postImage.length > 3 && (
+                {!showAllImages[index] && donation.images.length > 3 && (
                   <div className={styles.plusOverlay} onClick={() => handleShowAllImages(index)}>
-                    +{donation.postImage.length - 3}
+                    +{donation.images.length - 3}
                   </div>
                 )}
                 {showAllImages[index] && (
@@ -141,8 +143,8 @@ function Profile() {
                 )}
               </div>
             ) : (
-              donation.postImage && (
-                <img src={donation.postImage} className={styles.postImage} alt="Donation image" />
+              donation.images && (
+                <img src={donation.images} className={styles.postImage} alt="Donation image" />
               )
             )}
           </div>

@@ -19,87 +19,48 @@ function House() {
   const [isOverlay, setIsOverlay] = useState(false);
   const [isOverlayReq, setIsOverlayReq] = useState(false);
   const [data, setData] =useState([])
+  const [ homeData, setHomeData] =useState([])
   const {user} = useContext(UserContext)
+  const [searchLocation, setSearchLocation] = useState("");
+  const [searchRequests, setSearchRequests] = useState("");
+  const [searchPhone, setSearch] = useState("");
+
   const navigate = useNavigate()
 
   const fetchData = async()=>{
     try {
       const response = await axios.get(`${process.env.REACT_APP_PATH}/houses`,{withCredentials:true})
       if(response){
-        setData(response.data)
-        console.log(response.data)
+        setData(response.data.posts)
+        console.log(response.data.posts)
+
       }
     } catch (error) {
       console.log(error.message)
     }
   } 
+
+  const fetchRequest = async()=>{
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_PATH}/requestSupplies/home/requests`)
+      if(response){
+        setHomeData(response.data)
+        console.log(response.data)
+      }
+    } catch (error) {
+      console.log(error.message)
+    }
+  }
   useEffect(()=>{
     fetchData()
+    fetchRequest()
   },[])
-  const houses = [
-    {
-      location: "Beirut",
-      houseSpace: "200 m²",
-      bedrooms: 3,
-      phoneNumber: "79165588",
-      price: 500,
-    },
-    {
-      location: "Tripoli",
-      houseSpace: "180 m²",
-      bedrooms: 2,
-      phoneNumber: "70123456",
-      price: 400,
-    },
-    {
-      location: "Sidon",
-      houseSpace: "220 m²",
-      bedrooms: 4,
-      phoneNumber: "78945612",
-      price: 600,
-    },
-    {
-      location: "Sidon",
-      houseSpace: "220 m²",
-      bedrooms: 4,
-      phoneNumber: "78945612",
-      price: 600,
-    }
-  ];
-  const requests = [
-    {
-      donorName: "Ali",
-      location: "Tyre",
-      phoneNumber: "70124587",
-      description: "Looking for blankets for the winter season.",
-      timeAgo: "4 days ago",
-   
-    },
-    {
-      donorName: "Zeinab",
-      location: "Baalbek",
-      phoneNumber: "71563489",
-      description: "Need baby formula and food items urgently.",
-      timeAgo: "1 week ago",
-   
-    },
-    {
-      donorName: "Ali",
-      location: "Tyre",
-      phoneNumber: "70124587",
-      description: "Looking for blankets for the winter season.",
-      timeAgo: "4 days ago",
-   
-    },
-    {
-      donorName: "Zeinab",
-      location: "Baalbek",
-      phoneNumber: "71563489",
-      description: "Need baby formula and food items urgently.",
-      timeAgo: "1 week ago",
-   
-    },
-  ];
+
+  const filteredData = data.filter(house => house.location.toLowerCase().includes(searchLocation.toLowerCase()) &&  house.phone.includes(searchPhone))
+  
+  
+  const filteredRequests = homeData.filter(house => house.location.toLowerCase().includes(searchRequests.toLowerCase()));
+
 
 
   return (
@@ -117,6 +78,8 @@ function House() {
               name="location"
               placeholder="Enter your location"
               className={styles.input}
+              value={activeButton ==="Posts" ? searchLocation : searchRequests} 
+              onChange={(e) => activeButton ==="Posts" ?setSearchLocation(e.target.value) : setSearchRequests(e.target.value)}
             />
           </div>
           <div className={styles.holder}>
@@ -159,13 +122,11 @@ function House() {
       Ask for a house <button className={styles.btnPost} onClick={()=> user ? setIsOverlayReq(true) : navigate('/login')} >+</button>
       </div>}
       
+
       <div className={styles.bottom}>
-
-
-
-        {activeButton ==="Posts" && houses.map((house, index) => (
+         {activeButton ==="Posts" && Array.isArray(filteredData) && filteredData.map((house, index) => (
           <div className={styles.card} key={index}>
-            <img src={img} className={styles.image} alt="House" />
+            <img src={`${process.env.REACT_APP_PATH}/images/${house.images[0]}`} className={styles.image} alt="House" />
             <div className={styles.cardBottom}>
               <div className={styles.locHolder}>
                 <div className={styles.location1}>
@@ -174,7 +135,7 @@ function House() {
                 </div>
                 <div className={styles.location1}>
                   <PhoneIcon style={{ opacity: "0.5" }} />
-                  <p className={styles.location}>{house.phoneNumber}</p>
+                  <p className={styles.location}>{house.phone}</p>
                 </div>
               </div>
               <div className={styles.bottom2}>
@@ -182,13 +143,13 @@ function House() {
                   <BedIcon style={{ opacity: "0.5" }} />
                   <p style={{ fontSize: "17px" }}>{house.bedrooms}</p>
                 </div>
-                <div className={styles.price}>{house.houseSpace}</div>
+                <div className={styles.price}>{house.houseSpace} m²</div>
                 <div className={styles.price}>
                   <AttachMoneyIcon />
                   <p>{house.price}</p>
                 </div>
               </div>
-              <div className={styles.check}>
+              <div className={styles.check} onClick={()=>navigate(`/profile/${house.userId._id}`)}>
                 <p>Check profile</p>
                 <ArrowForwardIcon />
               </div>
@@ -196,13 +157,13 @@ function House() {
           </div>
         ))}
       </div>
-            {activeButton === 'Requests' && requests.map((request, index) => (
+            {activeButton === 'Requests' && filteredRequests.map((request, index) => (
           <div className={styles.post1} key={index}>
             {/* Single request without image */}
-            <div className={styles.profile}>
+            <div className={styles.profile} onClick={()=>navigate(`/profile/${request.requestedBy._id}`)}>
               <img src={img} className={styles.image1} alt="Profile" />
               <div className={styles.name}>
-                <h3 className={styles.h4}>{request.donorName}</h3>
+                <h3 className={styles.h4}>{request.requestedBy.name}</h3>
                 <p className={styles.time}>{request.timeAgo}</p>
               </div>
             </div>
@@ -212,14 +173,14 @@ function House() {
 
               <div className={styles.number}>
                 <PhoneIcon />
-                {request.phoneNumber}
+                {request.phone}
               </div>
             </div>
             <p className={styles.desc}>{request.description}</p>
           </div>
         ))}
-        {isOverlay && <section className={styles.overlay}><AddHouse setIsOverlay={setIsOverlay} /></section>}
-        {isOverlayReq && <section className={styles.overlay}><Request setIsOverlayReq={setIsOverlayReq} /></section>}
+        {isOverlay && <section className={styles.overlay}><AddHouse fetchData={fetchData} setIsOverlay={setIsOverlay} /></section>}
+        {isOverlayReq && <section className={styles.overlay}><Request fetchRequest={fetchRequest} setIsOverlayReq={setIsOverlayReq} /></section>}
     </div>
   );
 }

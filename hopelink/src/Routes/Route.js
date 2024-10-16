@@ -20,6 +20,7 @@ const Router = ()=>{
                 <Route path="/" element = {<Home />} />
                 <Route path="/house" element ={<House />} />
                 <Route path="/donate" element ={<Donate />} />
+                <Route path="/profile/:id" element ={<Profile />} />
                 <Route path="/profile" element ={<Profile />} />
                 <Route path="/volunteer" element ={<Volunteer />} />
                 </Route>

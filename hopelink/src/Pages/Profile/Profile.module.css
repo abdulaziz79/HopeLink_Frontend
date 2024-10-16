@@ -240,12 +240,12 @@
   }
   
   /* For 4 images */
-  .postImageContainer img:nth-child(1),
+  /* .postImageContainer img:nth-child(1),
   .postImageContainer img:nth-child(2),
   .postImageContainer img:nth-child(3),
   .postImageContainer img:nth-child(4) {
-    width: calc(50% - 0.1rem); /* All four take 50% width */
-  }
+    width: calc(50% - 0.1rem); 
+  } */
   
   .plusOverlay {
     width: calc(50% - 0.2rem);

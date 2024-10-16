@@ -1,11 +1,17 @@
 import React, { useState } from 'react';
 import styles from './Request.module.css';
+import { UserContext } from '../../../UseContext/UserContext';
+import { useContext } from 'react';
+import axios from 'axios';
 
 function Request({ setIsOverlayReq }) {
+  const { user} =useContext(UserContext)
   const [formData, setFormData] = useState({
     location: '',
-    phoneNumber: '',
+    phone: '',
     description: '',
+    requestType:"Supplies",
+    requestedBy:user && user.userId
   });
 
   const [error, setError] = useState(null);
@@ -20,14 +26,23 @@ function Request({ setIsOverlayReq }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    if (!formData.location || !formData.phoneNumber || !formData.description) {
-      setError("Please fill in all fields.");
-      return;
+    try {
+      const respone = axios.post(`${process.env.REACT_APP_PATH}/requestSupplies/add`,formData,{headers:{"Content-Type": "multipart/form-data"},withCredentials:true})
+      if(respone){
+        setFormData({
+          location: '',
+          phoneNumber: '',
+          description: '',
+          requestType:"Supplies",
+          requestedBy:user && user.userId
+        })
+        console.log("Form Data Submitted: ", formData);
+        setIsOverlayReq(false); 
+      }
+    } catch (error) {
+      console.log(error.message)
     }
 
-    console.log("Form Data Submitted: ", formData);
-    setIsOverlayReq(false); 
   };
 
   return (
@@ -53,8 +68,8 @@ function Request({ setIsOverlayReq }) {
           <label>Phone Number:</label>
           <input
             type="tel"
-            name="phoneNumber"
-            value={formData.phoneNumber}
+            name="phone"
+            value={formData.phone}
             onChange={handleChange}
             placeholder="Enter your phone number"
             className={styles.input}

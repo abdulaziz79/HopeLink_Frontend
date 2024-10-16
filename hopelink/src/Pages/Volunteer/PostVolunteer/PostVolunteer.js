@@ -1,11 +1,16 @@
 import React, { useState } from 'react';
 import styles from './PostVolunteer.module.css';
+import axios from 'axios';
+import { useContext } from 'react';
+import { UserContext } from '../../../UseContext/UserContext';
 
 function PostVolunteer({ setIsOverlay }) {
+  const {user} = useContext(UserContext)
   const [formData, setFormData] = useState({
     location: '',
-    phoneNumber: '',
+    phone: '',
     description: '',
+    userId: user && user.userId
   });
 
   const [error, setError] = useState(null);
@@ -18,18 +23,39 @@ function PostVolunteer({ setIsOverlay }) {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (!formData.location || !formData.phoneNumber || !formData.description) {
-      setError("Please fill in all fields.");
-      return;
+  
+    const dataToSend = {
+      location: formData.location,
+      description: formData.description,
+      phone: formData.phone,
+      userId: user && user.userId 
+    };
+  
+    try {
+      const response = await axios.post(
+        `${process.env.REACT_APP_PATH}/volunteer/add`,
+        dataToSend,
+        { withCredentials: true } 
+      );
+  
+      if (response) {
+        setFormData({
+          location: '',
+          description: '',
+          phone: '',
+          userId: user && user.userId
+        });
+  
+        console.log("Form Data Submitted: ", response.data); 
+        setIsOverlay(false); 
+      }
+    } catch (error) {
+      console.log("Error submitting form: ", error.message); 
     }
-
-    console.log("Form Data Submitted: ", formData);
-    setIsOverlay(false); 
   };
-
+  
   return (
     <div className={styles.overlay}>
       <form className={styles.form} onSubmit={handleSubmit}>
@@ -53,8 +79,8 @@ function PostVolunteer({ setIsOverlay }) {
           <label>Phone Number:</label>
           <input
             type="tel"
-            name="phoneNumber"
-            value={formData.phoneNumber}
+            name="phone"
+            value={formData.phone}
             onChange={handleChange}
             placeholder="Enter your phone number"
             className={styles.input}

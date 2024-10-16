@@ -42,7 +42,6 @@ function Register() {
         }
       );
 
-      console.log("response", response);
       setUser(response.data);
       fetchUserData();
       navigate('/');

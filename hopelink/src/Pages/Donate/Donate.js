@@ -18,6 +18,8 @@ function Donate() {
   const [isOverlay, setIsOverlay] =useState(false)
   const [isOverlayReq, setIsOverlayReq] =useState(false)
   const [ data, setData] =useState([])
+  const [ requestSupplies, setRequestSupplies] =useState([])
+
   const { user } = useContext(UserContext)
   const navigate = useNavigate()
 
@@ -29,7 +31,19 @@ function Donate() {
     try {
       const response = await axios.get(`${process.env.REACT_APP_PATH}/supplies`)
       if(response){
-        setData(response.data)
+        setData(response.data.supplies)
+        console.log(response.data.supplies)
+      }
+    } catch (error) {
+      console.log(error.message)
+    }
+  }
+
+  const fetchRequest = async()=>{
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_PATH}/requestSupplies/supplies/requests`)
+      if(response){
+        setRequestSupplies(response.data)
         console.log(response.data)
       }
     } catch (error) {
@@ -38,6 +52,7 @@ function Donate() {
   }
   useEffect(()=>{
     fetchData()
+    fetchRequest()
   },[])
   const donations = [
     {
@@ -167,13 +182,12 @@ function Donate() {
       </div>}
 
 
-        {activeButton === 'Posts' && donations.map((donation, index) => (
+      {activeButton === 'Posts' && Array.isArray(data) && data.length > 0 && data.map((donation, index) => (
           <div className={styles.post} key={index}>
-
-            <div className={styles.profile}>
+            <div className={styles.profile} onClick={()=>navigate(`/profile/${donation.userId._id}`)}>
               <img src={img} className={styles.image} alt="Profile" />
               <div className={styles.name}>
-                <h3 className={styles.h4}>{donation.donorName}</h3>
+                <h3 className={styles.h4}>{donation.userId.name}</h3>
                 <p className={styles.time}>{donation.timeAgo}</p>
               </div>
             </div>
@@ -183,7 +197,7 @@ function Donate() {
 
               <div className={styles.number}>
                 <PhoneIcon />
-                {donation.phoneNumber}
+                {donation.phone}
               </div>
               {donation.price > 0 && (
                 <div className={styles.price}>
@@ -195,7 +209,7 @@ function Donate() {
 
             <p className={styles.desc}>{donation.description}</p>
                 
-            {donation.postImage && <img src={donation.postImage} onClick={() => handleImageClick(donation.postImage)} className={styles.postImage} alt="Donation Post" />}
+            {donation.image && <img src={`${process.env.REACT_APP_PATH}/images/${donation.image}`} onClick={() => handleImageClick(donation.postImage)} className={styles.postImage} alt="Donation Post" />}
             
             {imageBig && (
           <div className={styles.imageModal} onClick={() => setImageBig(null)}>
@@ -207,13 +221,13 @@ function Donate() {
         ))}
 
         {/* Requests (without images) */}
-        {activeButton === 'Requests' && requests.map((request, index) => (
+        {activeButton === 'Requests' && requestSupplies.map((request, index) => (
           <div className={styles.post} key={index}>
             {/* Single request without image */}
-            <div className={styles.profile}>
+            <div className={styles.profile} onClick={()=>navigate(`/profile/${request.requestedBy._id}`)}>
               <img src={img} className={styles.image} alt="Profile" />
               <div className={styles.name}>
-                <h3 className={styles.h4}>{request.donorName}</h3>
+                <h3 className={styles.h4}>{request.requestedBy.name}</h3>
                 <p className={styles.time}>{request.timeAgo}</p>
               </div>
             </div>
@@ -223,7 +237,7 @@ function Donate() {
 
               <div className={styles.number}>
                 <PhoneIcon />
-                {request.phoneNumber}
+                {request.phone}
               </div>
               {/* {request.price > 0 && (
                 <div className={styles.price}>
