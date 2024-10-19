@@ -21,6 +21,7 @@ function Volunteer() {
   const [isOverlay, setIsOverlay] =useState(false)
   const [isOverlayReq, setIsOverlayReq] =useState(false)
   const [requestData, setRequestData] = useState([])
+  const [volunteers, setVolunteers] = useState([])
   const { user } = useContext(UserContext)
   const navigate = useNavigate()
 
@@ -40,44 +41,43 @@ function Volunteer() {
     }
   }
 
+  const fetchVolunteer = async()=>{
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_PATH}/volunteer/get/all`,{withCredentials:true});
+      if(response){
+        setVolunteers(response.data.volunteer)
+        console.log("ssssssssssssss",response.data)
+      }
+    } catch (error) {
+      console.log(error.message)
+    }
+  }
   useEffect(()=>{
     fetchData()
+    fetchVolunteer()
   },[])
-  
-  const requests = [
-    {
-      donorName: "Ali",
-      location: "Tyre",
-      phoneNumber: "70124587",
-      description: "Looking for blankets for the winter season.",
-      timeAgo: "4 days ago",
-   
-    },
-    {
-      donorName: "Zeinab",
-      location: "Baalbek",
-      phoneNumber: "71563489",
-      description: "Need baby formula and food items urgently.",
-      timeAgo: "1 week ago",
-   
-    },
-    {
-      donorName: "Ali",
-      location: "Tyre",
-      phoneNumber: "70124587",
-      description: "Looking for blankets for the winter season.",
-      timeAgo: "4 days ago",
-   
-    },
-    {
-      donorName: "Zeinab",
-      location: "Baalbek",
-      phoneNumber: "71563489",
-      description: "Need baby formula and food items urgently.",
-      timeAgo: "1 week ago",
-   
-    },
-  ];
+
+  function calculateTimeAgo(dateString) {
+    const postDate = new Date(dateString);
+    const now = new Date();
+    const diffInSeconds = Math.floor((now - postDate) / 1000);
+
+    const minutes = Math.floor(diffInSeconds / 60);
+    const hours = Math.floor(minutes / 60);
+    const days = Math.floor(hours / 24);
+
+    if (minutes < 1) {
+      return 'Just now';
+    } else if (minutes < 60) {
+      return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
+    } else if (hours < 24) {
+      return `${hours} hour${hours > 1 ? 's' : ''} ago`;
+    } else if (days <= 5) {
+      return `${days} day${days > 1 ? 's' : ''} ago`;
+    } else {
+      return postDate.toLocaleDateString();
+    }
+  }
 
   return (
     <>
@@ -126,7 +126,7 @@ function Volunteer() {
           <section aria-label="Requests">
             {activeButton === 'Requests' && requestData.map((donation, index) => (
               <article className={styles.post} key={index}>
-                <div className={styles.profile}>
+                <div className={styles.profile} onClick={() => navigate(`/profile/${donation.requestedBy._id}`)}>
                 <Avatar
                     alt={donation.requestedBy.name}
                      sx={{ cursor: "pointer", backgroundColor: "lightGrey", color: "#163357", height: "4rem", width: "4rem" }}
@@ -134,7 +134,7 @@ function Volunteer() {
                     {donation.requestedBy.name.charAt(0).toUpperCase()} 
                    </Avatar>                    <div className={styles.name}>
                     <h3 className={styles.h4}>{donation.requestedBy.name}</h3>
-                    <p className={styles.time}>{donation.timeAgo}</p>
+                    <p className={styles.time}>{calculateTimeAgo(donation.createdAt)}</p>
                   </div>
                 </div>
 
@@ -163,13 +163,17 @@ function Volunteer() {
           </section>
 
           <section aria-label="Posts">
-            {activeButton === 'Posts' && requests.map((request, index) => (
+            {volunteers && activeButton === 'Posts' && volunteers.map((request, index) => (
               <article className={styles.post} key={index}>
-                <div className={styles.profile}>
-                  <img src={img} className={styles.image} alt="Profile" />
-                  <div className={styles.name}>
-                    <h3 className={styles.h4}>{request.donorName}</h3>
-                    <p className={styles.time}>{request.timeAgo}</p>
+                <div className={styles.profile} onClick={() => navigate(`/profile/${request.userId._id}`)}>
+                <Avatar
+                alt={request.userId.name}
+                sx={{ cursor: "pointer", backgroundColor: "lightGrey", color: "#163357", height: "4rem", width: "4rem" }}
+              >
+                {request.userId.name.charAt(0).toUpperCase()} 
+                   </Avatar>                       <div className={styles.name}>
+                    <h3 className={styles.h4}>{request.userId.name}</h3>
+                    <p className={styles.time}>{calculateTimeAgo(request.createdAt)}</p>
                   </div>
                 </div>
 
@@ -177,7 +181,7 @@ function Volunteer() {
                   <p className={styles.loc}><LocationOnIcon />{request.location}</p>
                   <div className={styles.number}>
                     <PhoneIcon />
-                    {request.phoneNumber}
+                    {request.phone}
                   </div>
                 </div>
 

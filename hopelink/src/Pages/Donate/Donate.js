@@ -20,6 +20,10 @@ function Donate() {
   const [isOverlayReq, setIsOverlayReq] = useState(false);
   const [data, setData] = useState([]);
   const [requestSupplies, setRequestSupplies] = useState([]);
+  const [searchLocation, setSearchLocation] = useState("");
+  const [searchRequests, setSearchRequests] = useState("");
+  const [searchPhone, setSearch] = useState("");
+
 
   const { user } = useContext(UserContext);
   const navigate = useNavigate();
@@ -56,6 +60,9 @@ function Donate() {
     setImageBig(image);
   };
 
+  const filteredData = data.filter(house => house.location.toLowerCase().includes(searchLocation.toLowerCase()) && house.phone.includes(searchPhone));
+  const filteredRequests = requestSupplies.filter(house => house.location.toLowerCase().includes(searchRequests.toLowerCase()));
+
   const calculateTimeAgo = (dateString) => {
     const postDate = new Date(dateString);
     const now = new Date();
@@ -88,7 +95,11 @@ function Donate() {
           <form className={styles.filter}>
             <div className={styles.holder}>
               <label className={styles.h3} htmlFor="location">Location</label>
-              <input id="location" type="text" name="location" placeholder="Enter your location" className={styles.input} />
+              <input id="location" type="text" name="location" placeholder="Enter your location" className={styles.input}
+               value={activeButton === "Posts" ? searchLocation : searchRequests}
+               onChange={(e) => activeButton === "Posts" ? setSearchLocation(e.target.value) : setSearchRequests(e.target.value)}
+              
+              />
             </div>
 
             <div className={styles.holder}>
@@ -131,7 +142,7 @@ function Donate() {
                 <button className={styles.btnPost} onClick={() => user ? setIsOverlay(true) : navigate('/login') }>+</button>
               </div>
 
-              {Array.isArray(data) && data.length > 0 && data.map((donation, index) => (
+              {Array.isArray(filteredData) && filteredData.length > 0 && filteredData.map((donation, index) => (
                 <article className={styles.post} key={index}>
                   <div className={styles.profile} onClick={() => navigate(`/profile/${donation.userId._id}`)}>
                   <Avatar
@@ -157,7 +168,7 @@ function Donate() {
                   <p className={styles.desc}>{donation.description}</p>
 
                   {donation.image && (
-                    <img src={`${process.env.REACT_APP_PATH}/images/${donation.image}`} onClick={() => handleImageClick(donation.postImage)} className={styles.postImage} alt="Donation Post" />
+                    <img src={`${process.env.REACT_APP_PATH}/images/${donation.image}`} onClick={() => handleImageClick(`${process.env.REACT_APP_PATH}/images/${donation.image}`)}  className={styles.postImage} alt="Donation Post" />
                   )}
 
                   {imageBig && (
@@ -178,7 +189,7 @@ function Donate() {
                 <button className={styles.btnPost} onClick={() => user ? setIsOverlayReq(true) : navigate('/login')}>+</button>
               </div>
 
-              {requestSupplies.map((request, index) => (
+              {filteredRequests.map((request, index) => (
                 <article className={styles.post} key={index}>
                   <div className={styles.profile} onClick={() => navigate(`/profile/${request.requestedBy._id}`)}>
                   <Avatar

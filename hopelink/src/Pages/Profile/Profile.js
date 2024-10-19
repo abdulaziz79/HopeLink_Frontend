@@ -5,6 +5,7 @@ import img1 from '../../assets/images/profilee.jpeg';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import PhoneIcon from '@mui/icons-material/Phone';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import BedIcon from '@mui/icons-material/Bed';
 import { useContext } from 'react';
 import { UserContext } from '../../UseContext/UserContext';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -215,8 +216,12 @@ function calculateTimeAgo(dateString) {
         {activeButton ==="House" && houses.map((house, index) => (
           <div className={styles.post} key={index}>
             <div className={styles.profile1}>
-              <img src={img1} className={styles.image} alt="Profile" />
-              <div className={styles.name}>
+            <Avatar
+             alt={house.userId.name}
+              sx={{ cursor: "pointer", backgroundColor: "lightGrey", color: "#163357", height: "4rem", width: "4rem" }}
+               >
+         {house.userId.name.charAt(0).toUpperCase()} 
+            </Avatar>                <div className={styles.name}>
                 <h3 className={styles.h4}>{house.userId.name}</h3>
                 <p className={styles.time}>{calculateTimeAgo(house.updatedAt)}</p>
               </div>
@@ -228,12 +233,20 @@ function calculateTimeAgo(dateString) {
                 <PhoneIcon />
                 {house.phone}
               </div>
-              {house.price > 0 && (
+              {house.price > 0 ? (
                 <div className={styles.price}>
                   <AttachMoneyIcon />
                   {house.price}
                 </div>
-              )}
+              ):<div className={styles.price}>Free</div>}
+               <div className={styles.bottom2}>
+                  <div className={styles.price}>
+                    <BedIcon style={{ opacity: "0.5" }} />
+                    <p style={{ fontSize: "17px" }}>{house.bedrooms}</p>
+                  </div>
+                  <div className={styles.price}>{house.houseSpace} m²</div>
+               
+                </div>
             </div>
 
             <p className={styles.desc1}>{house.description}</p>
@@ -294,7 +307,7 @@ function calculateTimeAgo(dateString) {
            <p className={styles.donationDesc}>{donation.description}</p>
 
            {donation.image && (
-             <img src={`${process.env.REACT_APP_PATH}/images/${donation.image}`} onClick={() => handleImageClick(donation.postImage)} className={styles.donationPostImage} alt="Donation Post" />
+             <img src={`${process.env.REACT_APP_PATH}/images/${donation.image}`} onClick={() => handleImageClick(`${process.env.REACT_APP_PATH}/images/${donation.image}`)}  className={styles.donationPostImage} alt="Donation Post" />
            )}
 
            {imageBig && (
@@ -329,10 +342,6 @@ function calculateTimeAgo(dateString) {
           </div>
 
           <p className={styles.donationDesc}>{volunteer.description}</p>
-
-          {volunteer.image && (
-            <img src={`${process.env.REACT_APP_PATH}/images/${volunteer.image}`} onClick={() => handleImageClick(volunteer.postImage)} className={styles.donationPostImage} alt="Donation Post" />
-          )}
       </article>
         ))}
 
