@@ -45,7 +45,6 @@ function AddHouse({ setIsOverlay, fetchData }) {
     }
 
     const formDataToSend = new FormData();
-    // Append form fields to FormData
     formDataToSend.append('location', formData.location);
     formDataToSend.append('phone', formData.phone);
     formDataToSend.append('bedrooms', formData.bedrooms);

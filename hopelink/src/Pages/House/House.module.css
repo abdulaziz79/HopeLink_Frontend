@@ -190,11 +190,12 @@
     border-radius: 5px;
 }
 .image1{
-    width: 5rem;
-    height: 5rem;
+    width: 4.4rem;
+    height: 4.4rem;
     border-radius: 50%;
     border: 3px solid white;
     object-fit: cover;
+    border: 1px solid rgba(0, 0, 0, 0.185);
 }
 .profile{
     display: flex;

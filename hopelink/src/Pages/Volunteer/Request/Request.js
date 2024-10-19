@@ -1,12 +1,18 @@
 import React, { useState } from 'react';
 import styles from './Request.module.css';
+import { useContext } from 'react';
+import { UserContext } from '../../../UseContext/UserContext';
+import axios from 'axios';
 
-function Request({ setIsOverlayReq }) {
+function Request({ setIsOverlayReq, fetchData }) {
+  const { user} =useContext(UserContext)
   const [formData, setFormData] = useState({
     location: '',
-    phoneNumber: '',
-    price: '',
-    image: null,
+    phone: '',
+    image: '',
+    description:"",
+    requestType:"Volunteer",
+    requestedBy :user && user.userId
   });
 
   const [error, setError] = useState(null);
@@ -21,16 +27,44 @@ function Request({ setIsOverlayReq }) {
     setFormData((prevData) => ({ ...prevData, image: file }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.location || !formData.phoneNumber || !formData.price || !formData.image) {
-      setError('All fields are required.');
-      return;
-    }
+    
+    // Create a FormData object
+    const formDataToSend = new FormData();
+    
+    // Append form fields to the FormData object
+    formDataToSend.append('location', formData.location);
+    formDataToSend.append('phone', formData.phone);
+    formDataToSend.append('image', formData.image); 
+    formDataToSend.append('description', formData.description);
+    formDataToSend.append('requestType', formData.requestType);
+    formDataToSend.append('requestedBy', user.userId);
 
-    console.log('Form Data Submitted:', formData);
-    setIsOverlayReq(false); 
-  };
+    try {
+      // Make the POST request with FormData
+      const response = await axios.post(`${process.env.REACT_APP_PATH}/requestSupplies/add`, formDataToSend, {
+        withCredentials: true
+      });
+
+      if (response) {
+        setFormData({
+          location: '',
+          phone: '',
+          image: '',
+          description: '',
+          requestType: "Volunteer",
+          requestedBy: user && user.userId
+        });
+
+        console.log("Form Data Submitted: ", formData);
+        setIsOverlayReq(false); 
+        fetchData()
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+};
 
   return (
     <div className={styles.sellContainer}>
@@ -52,23 +86,11 @@ function Request({ setIsOverlayReq }) {
           <label>Phone Number:</label>
           <input
             type="tel"
-            name="phoneNumber"
-            value={formData.phoneNumber}
+            name="phone"
+            value={formData.phone}
             onChange={handleChange}
             required
             placeholder="e.g., 79123456"
-          />
-        </div>
-
-        <div className={styles.inputGroup}>
-          <label>Price:</label>
-          <input
-            type="number"
-            name="price"
-            value={formData.price}
-            onChange={handleChange}
-            required
-            placeholder="e.g., 100"
           />
         </div>
 
@@ -78,9 +100,21 @@ function Request({ setIsOverlayReq }) {
             type="file"
             accept="image/*"
             onChange={handleImageChange}
-            required
+            
           />
         </div>
+             <div className={styles.inputGroup}>
+          <label>Description:</label>
+          <textarea
+            name="description"
+            value={formData.description}
+            onChange={handleChange}
+            required
+            rows="4"
+            placeholder="Describe your needs..."
+          />
+        </div>
+
 
         <div className={styles.buttonGroup}>
           <button type="submit" className={styles.submitButton}>Submit</button>

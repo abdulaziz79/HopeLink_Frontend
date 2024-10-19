@@ -4,6 +4,8 @@ import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../../UseContext/UserContext';
 import axios from 'axios';
+import Avatar from '@mui/material/Avatar';
+
 import { Home as HomeIcon, House as HouseIcon, VolunteerActivism as DonateIcon, Group as VolunteerIcon } from '@mui/icons-material'; // Importing icons
 
 function Navbar() {
@@ -51,14 +53,23 @@ function Navbar() {
             </a>
           </li>
         </ul>
-        <div style={{display:"flex"}}>
+        <div style={{display:"flex", gap:"1rem",alignItems:"center", justifyContent:"center"}}>
         {user ?  
-          <button className={styles.btn} onClick={handleLogout}>Logout</button>
+          <button className={styles.btn1} onClick={handleLogout}>Logout</button>
          : <a href='/login'>
           <button className={styles.btn}>Login</button>
         </a>}
-        <p style={{color:"white"}}> profile</p>
-        </div>
+     {user && (
+  <a href="/profile">
+    <Avatar
+      alt={user.name}
+      sx={{ cursor: "pointer", backgroundColor: "lightGrey", color: "#163357", height: "2.2rem", width: "2.2rem" }}
+    >
+      {user.name.charAt(0).toUpperCase()} 
+    </Avatar>
+  </a>
+)}
+       </div>
         
       </nav>
     </div>
