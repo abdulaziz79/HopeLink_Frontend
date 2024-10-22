@@ -1,0 +1,230 @@
+.footer {
+    background-image:url(/src/assets/images/login.jpg);
+    background-position: center center;
+    background-size: cover;
+    position: relative;
+    background-position: 50% 40%;
+    /* scroll-snap-align: center; */
+  }
+  
+  .heroBackgrd {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.786); 
+}
+  .container {
+    width: 90%;
+    position: relative;
+    margin: auto;
+    display: flex;
+    z-index: 10;
+    justify-content: space-evenly;
+    align-items: center;
+    padding: 30px 15px;
+    gap: 30px;
+    /* height: 22rem; */
+  }
+  .span{
+  font-weight: bold;
+  font-size: 20px;
+  /* margin-left: 6rem; */
+  color: white;
+  margin-bottom: 2rem;
+  }
+  
+  .logoDescription {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    z-index: 20;
+    gap: 1rem;
+  }
+  .logoDescription img {
+    width: 150px;
+    margin-bottom: 20px;
+  }
+  .logoDescription p {
+    /* color: rgba(0, 0, 0, 0.60); */
+    color: white;
+    text-align: center;
+    font-size: 17px;
+    width: 300px;
+    font-style: normal;
+    font-weight: 400;
+  }
+  
+  .company, .contact {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 25px;
+  }
+  .title {
+    color: white;
+    /* font-family: Lato; */
+    font-size: 17px;
+    font-style: normal;
+    font-weight: bold;
+    line-height: 18px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+  .links li:not(:last-child) {
+    margin-bottom: 20px;
+  }
+  .links li, .links a {
+    /* color: rgba(0, 0, 0, 0.70); */
+    color: white;
+    font-size: 18px;
+  }
+  .links a:hover {
+    /* color: var(--Magenta-dye, #D81A84); */
+  }
+  
+  .social {
+    height: 188px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .social .title {
+    margin-bottom: 25px;
+  
+  }
+  .socialLinks {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 30px;
+  }
+  .socialLinks a img {
+    width: 32px;
+    height: 32px;
+  }
+  .signUp {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .signUp label {
+    /* color: rgba(0, 0, 0, 0.60); */
+    color: white;
+    font-size: 16px;
+  }
+  .inputBox {
+    display: flex;
+    border: 1px solid white;
+    border-radius: var(--border-radius);
+  }
+  .inputBox .emailInput {
+    /* width: 250px; */
+    padding: 14px 16px;
+    /* border: 1px solid var(--grey-grey-400, #9CA3AF); */
+    /* background: #FFF; */
+    color: white;
+    background-color: transparent;
+    border: none;
+
+  }
+  .inputBox .emailInput::placeholder {
+    /* color: rgba(0, 0, 0, 0.60); */
+    font-size: 16px;
+    transition: .2s;
+    color: white;
+  }
+  .inputBox .emailInput:focus::placeholder {
+    opacity: 0;
+  }
+  .inputBox .emailInput:focus {
+    outline: none;
+  }
+  .inputBox .submit {
+    /* background: var(--Thulian-pink, #D96093); */
+    background-color: transparent;
+    color: var(--White, #FFF);
+    text-align: center;
+    font-size: 16px;
+    border: none;
+    transition: .2s;
+    cursor: pointer;
+    padding: 13px 10px 13px 10px;
+  }
+  .inputBox .submit:hover {
+    /* background: #bb537e ; */
+  }
+  
+  
+  .copyright {
+    /* color: rgba(0, 0, 0, 0.60); */
+    color: white;
+    font-size: 16px;
+    font-weight: 400;
+    text-align: center;
+    padding: 45px;
+    position: relative;
+    z-index: 2;
+  }
+  
+  @media (max-width: 992px) {
+    .container {
+        justify-content: center;
+        align-items: center;
+        gap: 60px 30px;
+        flex-wrap: wrap;
+    }
+    .container > div {
+        width: 47%;
+    }
+    .logo-description {
+        align-items: flex-start;
+    }
+    .company, .contact, .social {
+      align-items: center;
+    }
+    .company .links, .contact .links {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    .signUp label {
+        font-size: 15px;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+        gap: 50px;
+    }
+    .container > div {
+        width: 100%;
+        align-items: center;
+    }
+    .company, .contact {
+        gap: 15px;
+    }
+    .social .title {
+        margin-bottom: 15px;
+    }
+    .social .signUp {
+        align-items: center;
+    }
+    .inputBox .emailInput {
+        width: 200px;
+    }
+    .inputBox .submit {
+        padding: 13px 20px 13px 20px;
+        text-align: center;
+        font-size: 16px;
+    }
+  }

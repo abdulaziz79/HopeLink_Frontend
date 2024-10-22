@@ -30,7 +30,7 @@
     font-weight: 600;
     color: rgb(90, 191, 225);
 }
-.pRight{
+.pRight1{
     position: absolute;
     right: 17%;
     top: 20%;
@@ -41,6 +41,11 @@
     /* line-height: 10px; */
     
 }
+/* .pRight1{
+    display: flex;
+    flex-direction: column;
+    gap: 1.7rem;
+} */
 .h2{
     font-size: 30px;
 }

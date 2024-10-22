@@ -16,21 +16,23 @@ import Avatar from '@mui/material/Avatar';
 function Donate() {
   const [activeButton, setActiveButton] = useState('Posts');
   const [imageBig, setImageBig] = useState(null); 
-  const [isOverlay, setIsOverlay] = useState(false);
+  const [isOverlayDonate, setIsOverlayDonate] = useState(false);
   const [isOverlayReq, setIsOverlayReq] = useState(false);
   const [data, setData] = useState([]);
   const [requestSupplies, setRequestSupplies] = useState([]);
   const [searchLocation, setSearchLocation] = useState("");
   const [searchRequests, setSearchRequests] = useState("");
   const [searchPhone, setSearch] = useState("");
+  const [sortOrder, setSortOrder] = useState("")
+  const [loading, setLoading] = useState(true);
+  const [loading2, setLoading2] = useState(true); 
 
 
   const { user } = useContext(UserContext);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
+  const fetchDataDonation = async () => {
+    try {
         const response = await axios.get(`${process.env.REACT_APP_PATH}/supplies`);
         if (response) {
           setData(response.data.supplies);
@@ -38,6 +40,8 @@ function Donate() {
         }
       } catch (error) {
         console.error(error.message);
+      }finally {
+        setLoading(false); 
       }
     };
 
@@ -49,20 +53,39 @@ function Donate() {
         }
       } catch (error) {
         console.error(error.message);
+      }finally {
+        setLoading2(false); 
       }
     };
-
-    fetchData();
-    fetchRequest();
+    
+    useEffect(() => {
+    fetchDataDonation();
+    // fetchRequest();
   }, []);
 
   const handleImageClick = (image) => {
     setImageBig(image);
   };
 
-  const filteredData = data.filter(house => house.location.toLowerCase().includes(searchLocation.toLowerCase()) && house.phone.includes(searchPhone));
+  const filteredData = data.filter(house => house.location.toLowerCase().includes(searchLocation.toLowerCase()) && house.phone.includes(searchPhone))
+  .sort((a, b) => {
+    if (sortOrder === "lowToHigh") {
+      return a.price - b.price; 
+    } else if (sortOrder === "highToLow") {
+      return b.price - a.price;
+    } else {
+      return 0; 
+    }
+  });  ;
   const filteredRequests = requestSupplies.filter(house => house.location.toLowerCase().includes(searchRequests.toLowerCase()));
 
+  const resetFilters = async () => {
+    setSearchLocation("");
+    setSearchRequests("");
+    setSearch("");
+    setSortOrder("");
+    await fetchDataDonation(); 
+  };
   const calculateTimeAgo = (dateString) => {
     const postDate = new Date(dateString);
     const now = new Date();
@@ -108,114 +131,136 @@ function Donate() {
             </div>
 
             <div className={styles.holder}>
-              <label className={styles.h3} htmlFor="category">Category</label>
-              <select id="category" className={styles.select}>
-                <option value="forSell">For Sell</option>
-                <option value="forRent">For Rent</option>
+              <label className={styles.h3} htmlFor="price">Price</label>
+              <select
+                  id="price"
+                  className={styles.select}
+                  onChange={(e) => {
+                  const value = e.target.value;
+                  if (value === "Low to high") {
+                    setSortOrder("lowToHigh");
+                  } else if (value === "High to low") {
+                    setSortOrder("highToLow");
+                  } else {
+                    setSortOrder(""); 
+                  }
+                }}
+              >
+              <option value="" className={styles.option}>Default</option>
+                <option value="Low to high" className={styles.option}>Low to high</option>
+                <option value="High to low" className={styles.option}>High to low</option>
               </select>
             </div>
 
-            <button type="reset" className={styles.button}>Reset</button>
+            <button type="reset" className={styles.button} onClick={resetFilters}>Reset</button>
           </form>
         </header>
 
         <main className={styles.bottom2}>
-          <nav className={styles.buttons}>
-            <button 
-              className={`${styles.btn} ${activeButton === 'Posts' ? styles.active : ''}`} 
-              onClick={() => setActiveButton('Posts')}
+          {loading ? (
+            <p className={styles.loading}>loading...</p>
+          ):(
+            <>
+
+<nav className={styles.buttons}>
+  <button 
+    className={`${styles.btn} ${activeButton === 'Posts' ? styles.active : ''}`} 
+    onClick={() => setActiveButton('Posts')}
+  >
+    Posts
+  </button>
+  <button 
+    className={`${styles.btn} ${activeButton === 'Requests' ? styles.active : ''}`} 
+    onClick={() => {setActiveButton('Requests') ; fetchRequest()}}
+  >
+    Requests
+  </button>
+</nav>
+
+{activeButton === 'Posts' && (
+  <section>
+    <div className={styles.add}>
+      <p>Donate / Sell</p>
+      <button className={styles.btnPost} onClick={() => user ? setIsOverlayDonate(true) : navigate('/login') }>+</button>
+    </div>
+
+    {Array.isArray(filteredData) && filteredData.length > 0 && filteredData.map((donation, index) => (
+      <article className={styles.post} key={index}>
+        <div className={styles.profile} onClick={() => navigate(`/profile/${donation.userId._id}`)}>
+        <Avatar
+          alt={donation.userId.name}
+           sx={{ cursor: "pointer", backgroundColor: "lightGrey", color: "#163357", height: "4rem", width: "4rem" }}
             >
-              Posts
-            </button>
-            <button 
-              className={`${styles.btn} ${activeButton === 'Requests' ? styles.active : ''}`} 
-              onClick={() => setActiveButton('Requests')}
-            >
-              Requests
-            </button>
-          </nav>
+      {donation.userId.name.charAt(0).toUpperCase()} 
+         </Avatar>  
+          <div className={styles.name}>
+            <h3 className={styles.h4}>{donation.userId.name}</h3>
+            <p className={styles.time}>{calculateTimeAgo(donation.createdAt)}</p>
+          </div>
+        </div>
 
-          {activeButton === 'Posts' && (
-            <section>
-              <div className={styles.add}>
-                <p>Donate / Sell</p>
-                <button className={styles.btnPost} onClick={() => user ? setIsOverlay(true) : navigate('/login') }>+</button>
-              </div>
+        <div className={styles.holder2}>
+          <p className={styles.loc}><LocationOnIcon />{donation.location}</p>
+          <p className={styles.number}><PhoneIcon />{donation.phone}</p>
+          {donation.price > 0 && (
+            <p className={styles.price}><AttachMoneyIcon />{donation.price}</p>
+          )}
+        </div>
 
-              {Array.isArray(filteredData) && filteredData.length > 0 && filteredData.map((donation, index) => (
-                <article className={styles.post} key={index}>
-                  <div className={styles.profile} onClick={() => navigate(`/profile/${donation.userId._id}`)}>
-                  <Avatar
-                    alt={donation.userId.name}
-                     sx={{ cursor: "pointer", backgroundColor: "lightGrey", color: "#163357", height: "4rem", width: "4rem" }}
-                      >
-                {donation.userId.name.charAt(0).toUpperCase()} 
-                   </Avatar>  
-                    <div className={styles.name}>
-                      <h3 className={styles.h4}>{donation.userId.name}</h3>
-                      <p className={styles.time}>{calculateTimeAgo(donation.createdAt)}</p>
-                    </div>
-                  </div>
+        <p className={styles.desc}>{donation.description}</p>
 
-                  <div className={styles.holder2}>
-                    <p className={styles.loc}><LocationOnIcon />{donation.location}</p>
-                    <p className={styles.number}><PhoneIcon />{donation.phone}</p>
-                    {donation.price > 0 && (
-                      <p className={styles.price}><AttachMoneyIcon />{donation.price}</p>
-                    )}
-                  </div>
+        {donation.image && (
+          <img src={`${process.env.REACT_APP_PATH}/images/${donation.image}`} onClick={() => handleImageClick(`${process.env.REACT_APP_PATH}/images/${donation.image}`)}  className={styles.postImage} alt="Donation Post" />
+        )}
 
-                  <p className={styles.desc}>{donation.description}</p>
-
-                  {donation.image && (
-                    <img src={`${process.env.REACT_APP_PATH}/images/${donation.image}`} onClick={() => handleImageClick(`${process.env.REACT_APP_PATH}/images/${donation.image}`)}  className={styles.postImage} alt="Donation Post" />
-                  )}
-
-                  {imageBig && (
-                    <div className={styles.imageModal} onClick={() => setImageBig(null)}>
-                      <img src={imageBig} className={styles.enlargedImage} alt="Enlarged" />
-                      <div className={styles.closeButton} onClick={() => setImageBig(null)}>X</div>
-                    </div>
-                  )}
-                </article>
-              ))}
-            </section>
+        {imageBig && (
+          <div className={styles.imageModal} onClick={() => setImageBig(null)}>
+            <img src={imageBig} className={styles.enlargedImage} alt="Enlarged" />
+            <div className={styles.closeButton} onClick={() => setImageBig(null)}>X</div>
+          </div>
+        )}
+      </article>
+    ))}
+  </section>
+)}
+            </>
           )}
 
-          {activeButton === 'Requests' && (
-            <section>
-              <div className={styles.add}>
-                <p>Ask for something</p>
-                <button className={styles.btnPost} onClick={() => user ? setIsOverlayReq(true) : navigate('/login')}>+</button>
-              </div>
+{activeButton === 'Requests' && (
+  <section>
+    <div className={styles.add}>
+      <p>Ask for something</p>
+      <button className={styles.btnPost} onClick={() => user ? setIsOverlayReq(true) : navigate('/login')}>+</button>
+    </div>
 
-              {filteredRequests.map((request, index) => (
-                <article className={styles.post} key={index}>
-                  <div className={styles.profile} onClick={() => navigate(`/profile/${request.requestedBy._id}`)}>
-                  <Avatar
-                    alt={request.requestedBy.name}
-                     sx={{ cursor: "pointer", backgroundColor: "lightGrey", color: "#163357", height: "4rem", width: "4rem" }}
-                      >
-                {request.requestedBy.name.charAt(0).toUpperCase()} 
-                   </Avatar>                     
-                   <div className={styles.name}>
-                      <h3 className={styles.h4}>{request.requestedBy.name}</h3>
-                      <p className={styles.time}>{calculateTimeAgo(request.createdAt)}</p>
-                    </div>
-                  </div>
+    {filteredRequests.map((request, index) => (
+      <article className={styles.post} key={index}>
+        <div className={styles.profile} onClick={() => navigate(`/profile/${request.requestedBy._id}`)}>
+        <Avatar
+          alt={request.requestedBy.name}
+           sx={{ cursor: "pointer", backgroundColor: "lightGrey", color: "#163357", height: "4rem", width: "4rem" }}
+            >
+      {request.requestedBy.name.charAt(0).toUpperCase()} 
+         </Avatar>                     
+         <div className={styles.name}>
+            <h3 className={styles.h4}>{request.requestedBy.name}</h3>
+            <p className={styles.time}>{calculateTimeAgo(request.createdAt)}</p>
+          </div>
+        </div>
 
-                  <div className={styles.holder2}>
-                    <p className={styles.loc}><LocationOnIcon />{request.location}</p>
-                    <p className={styles.number}><PhoneIcon />{request.phone}</p>
-                  </div>
+        <div className={styles.holder2}>
+          <p className={styles.loc}><LocationOnIcon />{request.location}</p>
+          <p className={styles.number}><PhoneIcon />{request.phone}</p>
+        </div>
 
-                  <p className={styles.desc}>{request.description}</p>
-                </article>
-              ))}
-            </section>
-          )}
+        <p className={styles.desc}>{request.description}</p>
+      </article>
+    ))}
+  </section>
+)}
+    
 
-          {isOverlay && <section className={styles.overlay}><Sell setIsOverlay={setIsOverlay} /></section>}
+          {isOverlayDonate && <section className={styles.overlay}><Sell setIsOverlayDonate={setIsOverlayDonate} fetchDataDonation={fetchDataDonation} /></section>}
           {isOverlayReq && <section className={styles.overlay}><Request setIsOverlayReq={setIsOverlayReq} /></section>}
         </main>
       </section>

@@ -23,6 +23,8 @@ function Volunteer() {
   const [requestData, setRequestData] = useState([])
   const [volunteers, setVolunteers] = useState([])
   const { user } = useContext(UserContext)
+  const [loading, setLoading] = useState(true);
+  const [loading2, setLoading2] = useState(true); 
   const navigate = useNavigate()
 
 
@@ -39,6 +41,9 @@ function Volunteer() {
     } catch (error) {
       console.log(error.message)
     }
+    finally {
+      setLoading(false); 
+    }
   }
 
   const fetchVolunteer = async()=>{
@@ -50,6 +55,9 @@ function Volunteer() {
       }
     } catch (error) {
       console.log(error.message)
+    }
+    finally {
+      setLoading2(false); 
     }
   }
   useEffect(()=>{
@@ -92,29 +100,62 @@ function Volunteer() {
           <div className={styles.heroBackgrd}></div>
           <h1 className={styles.h1}>Lend a Hand, Make a Difference</h1>
         </section>
-
         <section className={styles.bottom2}>
           <nav className={styles.buttons}>
             <button
               className={`${styles.btn} ${activeButton === 'Posts' ? styles.active : ''}`}
               onClick={() => setActiveButton('Posts')}
-            >
+              >
               Posts
             </button>
             <button
               className={`${styles.btn} ${activeButton === 'Requests' ? styles.active : ''}`}
               onClick={() => setActiveButton('Requests')}
-            >
+              >
               Requests
             </button>
           </nav>
 
-          {activeButton === "Posts" && (
+          {loading ? (
+            <p className={styles.loading}>loading...</p>
+          ):(
+            <>
+              {activeButton === "Posts" && (
             <div className={styles.add}>
               Offer a Service
               <button className={styles.btnPost} onClick={() => user ? setIsOverlay(true) : navigate('/login')}>+</button>
             </div>
           )}
+              <section aria-label="Posts">
+            {volunteers && activeButton === 'Posts' && volunteers.map((request, index) => (
+              <article className={styles.post} key={index}>
+                <div className={styles.profile} onClick={() => navigate(`/profile/${request.userId._id}`)}>
+                <Avatar
+                alt={request.userId.name}
+                sx={{ cursor: "pointer", backgroundColor: "lightGrey", color: "#163357", height: "4rem", width: "4rem" }}
+              >
+                {request.userId.name.charAt(0).toUpperCase()} 
+                   </Avatar>                       <div className={styles.name}>
+                    <h3 className={styles.h4}>{request.userId.name}</h3>
+                    <p className={styles.time}>{calculateTimeAgo(request.createdAt)}</p>
+                  </div>
+                </div>
+
+                <div className={styles.holder2}>
+                  <p className={styles.loc}><LocationOnIcon />{request.location}</p>
+                  <div className={styles.number}>
+                    <PhoneIcon />
+                    {request.phone}
+                  </div>
+                </div>
+
+                <p className={styles.desc}>{request.description}</p>
+              </article>
+            ))}
+          </section>
+            </>
+          )}
+        
 
           {activeButton === "Requests" && (
             <div className={styles.add}>
@@ -122,7 +163,11 @@ function Volunteer() {
               <button className={styles.btnPost} onClick={() => user ? setIsOverlayReq(true) : navigate('/login')}>+</button>
             </div>
           )}
-
+        
+            {loading2 ? (
+              <p className={styles.loading}>loading...</p>
+            ):(
+              <>
           <section aria-label="Requests">
             {activeButton === 'Requests' && requestData.map((donation, index) => (
               <article className={styles.post} key={index}>
@@ -161,34 +206,10 @@ function Volunteer() {
               </article>
             ))}
           </section>
+              </>
+            )}
 
-          <section aria-label="Posts">
-            {volunteers && activeButton === 'Posts' && volunteers.map((request, index) => (
-              <article className={styles.post} key={index}>
-                <div className={styles.profile} onClick={() => navigate(`/profile/${request.userId._id}`)}>
-                <Avatar
-                alt={request.userId.name}
-                sx={{ cursor: "pointer", backgroundColor: "lightGrey", color: "#163357", height: "4rem", width: "4rem" }}
-              >
-                {request.userId.name.charAt(0).toUpperCase()} 
-                   </Avatar>                       <div className={styles.name}>
-                    <h3 className={styles.h4}>{request.userId.name}</h3>
-                    <p className={styles.time}>{calculateTimeAgo(request.createdAt)}</p>
-                  </div>
-                </div>
-
-                <div className={styles.holder2}>
-                  <p className={styles.loc}><LocationOnIcon />{request.location}</p>
-                  <div className={styles.number}>
-                    <PhoneIcon />
-                    {request.phone}
-                  </div>
-                </div>
-
-                <p className={styles.desc}>{request.description}</p>
-              </article>
-            ))}
-          </section>
+        
         </section>
 
         {isOverlay && (

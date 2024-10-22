@@ -4,7 +4,7 @@ import { useContext } from 'react';
 import { UserContext } from '../../../UseContext/UserContext';
 import axios from 'axios';
 
-function Sell({ setIsOverlay }) {
+function Sell({ fetchDataDonation, setIsOverlayDonate }) {
   const {user} =useContext(UserContext)
   const [formData, setFormData] = useState({
     location: '',
@@ -65,7 +65,9 @@ const handleSubmit = async (e) => {
         price: '',
         phone: ''
       });
-      setIsOverlay(false);
+
+      setIsOverlayDonate(false)
+      fetchDataDonation()
     }
   } catch (error) {
     console.log(error.message);
@@ -115,15 +117,7 @@ const handleSubmit = async (e) => {
           />
         </div>
 
-        <div className={styles.inputGroup}>
-          <label>Upload Image:</label>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleImageChange}
-            required
-          />
-        </div>
+      
         <div className={styles.formGroup}>
           <label>Description:</label>
           <textarea
@@ -134,12 +128,21 @@ const handleSubmit = async (e) => {
             className={styles.textarea}
           ></textarea>
         </div>
+        <div className={styles.inputGroup}>
+          <label>Upload Image <span style={{opacity:"0.7", fontSize:"12px"}}>(Optinal)</span>:</label>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleImageChange}
+            // required
+          />
+        </div>
         <div className={styles.buttonGroup}>
           <button type="submit" className={styles.submitButton}>Submit</button>
           <button
             type="button"
             className={styles.cancelButton}
-            onClick={() => setIsOverlay(false)} 
+            onClick={() => setIsOverlayDonate(false)} 
           >
             Cancel
           </button>

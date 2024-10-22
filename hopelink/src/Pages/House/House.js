@@ -26,7 +26,12 @@ function House() {
   const [searchLocation, setSearchLocation] = useState("");
   const [searchRequests, setSearchRequests] = useState("");
   const [searchPhone, setSearch] = useState("");
+  const [sortOrder, setSortOrder] = useState("")
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
+  const [loading2, setLoading2] = useState(true);
+
+
 
   const fetchData = async () => {
     try {
@@ -36,6 +41,8 @@ function House() {
       }
     } catch (error) {
       console.log(error.message);
+    }finally {
+      setLoading(false); 
     }
   };
 
@@ -47,16 +54,27 @@ function House() {
       }
     } catch (error) {
       console.log(error.message);
+    }finally {
+      setLoading2(false); 
     }
   };
 
   useEffect(() => {
     fetchData();
-    fetchRequest();
   }, []);
 
-  const filteredData = data.filter(house => house.location.toLowerCase().includes(searchLocation.toLowerCase()) && house.phone.includes(searchPhone));
-  const filteredRequests = homeData.filter(house => house.location.toLowerCase().includes(searchRequests.toLowerCase()));
+  const filteredData = data
+    .filter(house => house.location.toLowerCase().includes(searchLocation.toLowerCase()) && house.phone.includes(searchPhone))
+    .sort((a, b) => {
+      if (sortOrder === "lowToHigh") {
+        return a.price - b.price; 
+      } else if (sortOrder === "highToLow") {
+        return b.price - a.price;
+      } else {
+        return 0; 
+      }
+    });  
+    const filteredRequests = homeData.filter(house => house.location.toLowerCase().includes(searchRequests.toLowerCase()));
 
   function calculateTimeAgo(dateString) {
     const postDate = new Date(dateString);
@@ -79,6 +97,13 @@ function House() {
       return postDate.toLocaleDateString();
     }
   }
+  const resetFilters = async () => {
+    setSearchLocation("");
+    setSearchRequests("");
+    setSearch("");
+    setSortOrder("");
+    await fetchData(); 
+  };
 
   return (
     <>
@@ -111,13 +136,27 @@ function House() {
               <input type="number" id="minPrice" name="minPrice" placeholder="Enter min price" className={styles.input} />
             </div>
             <div className={styles.holder}>
-              <label htmlFor="maxPrice" className={styles.h3}>Max price</label>
-              <select id="maxPrice" className={styles.select}>
-                <option value="For Sale" className={styles.option}>For Sale</option>
-                <option value="For Rent" className={styles.option}>For Rent</option>
+              <label htmlFor="maxPrice" className={styles.h3}>Price</label>
+              <select
+                  id="price"
+                  className={styles.select}
+                  onChange={(e) => {
+                  const value = e.target.value;
+                  if (value === "Low to high") {
+                    setSortOrder("lowToHigh");
+                  } else if (value === "High to low") {
+                    setSortOrder("highToLow");
+                  } else {
+                    setSortOrder(""); 
+                  }
+                }}
+              >
+              <option value="" className={styles.option}>Default</option>
+                <option value="Low to high" className={styles.option}>Low to high</option>
+                <option value="High to low" className={styles.option}>High to low</option>
               </select>
             </div>
-            <button type="reset" className={styles.button}>Reset</button>
+            <button type="reset" className={styles.button} onClick={resetFilters}>Reset</button>
           </form>
         </section>
 
@@ -125,11 +164,16 @@ function House() {
           <button className={`${styles.btn} ${activeButton === 'Posts' ? styles.active : ''}`} onClick={() => setActiveButton('Posts')}>
             Posts
           </button>
-          <button className={`${styles.btn} ${activeButton === 'Requests' ? styles.active : ''}`} onClick={() => setActiveButton('Requests')}>
+          <button className={`${styles.btn} ${activeButton === 'Requests' ? styles.active : ''}`} onClick={() => {setActiveButton('Requests'); fetchRequest()}}>
             Requests
           </button>
         </div>
 
+        {loading ? (
+          <p className={styles.loading}>loading...</p>
+        )
+        
+          :(<>
         {activeButton === "Posts" && (
           <div className={styles.add}>
             <p>List a house</p>
@@ -186,6 +230,8 @@ function House() {
             </article>
           ))}
         </section>
+        </>)}
+          
 
         {activeButton === 'Requests' && filteredRequests.map((request, index) => (
           <article className={styles.post1} key={index}>
