@@ -112,3 +112,65 @@ border-radius: 20px;
     color: white;
     font-size: 18px;
 }
+@media screen and (max-width :1233px) {
+    .h2{
+        font-size: 50px;
+        letter-spacing: -2px;
+    }
+}
+@media screen and (max-width :1032px) {
+   .right{
+    position: absolute;
+    left: 50%;
+    top: 55%;
+    transform: translate(-50%, -50%);
+    background-color: transparent;
+    background-color: rgba(10, 8, 48, 0.659);
+    backdrop-filter: blur(1px) brightness(1);
+    height: fit-content;
+    border-radius: 30px;
+    padding: 1.5rem 0.8rem 3rem 0.8rem;
+
+   }.left{
+    width: 100%;
+   }
+   .h2{
+    font-size: 40px;
+    text-align: center;
+   }
+   .p2{
+    font-size: 14px;
+   }
+   .input2{
+    height: 2.5rem;
+    font-size: 14px;
+   }
+   .input{
+    height: 2.5rem;
+    font-size: 14px;
+   }
+   .form{
+    gap: 1rem;
+    width: 97%;
+   }
+}
+@media screen and (max-width :600px) {
+    .right{
+        width: 80%;
+    }
+    .p{
+        font-size: 25px;
+        line-height: 30px;
+        top: 89%;
+    }
+    .none{
+        display: none;
+    }
+    .btn{
+        width: 4rem;
+    }
+    .h2{
+        line-height: 38px;
+    }
+
+}

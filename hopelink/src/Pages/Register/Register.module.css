@@ -99,8 +99,8 @@ border-radius: 20px;
     height: 3.4rem;
     border-radius: 8px;
     border: none;
-    background-color: rgb(77, 77, 83);
-    color: white;
+    background-color: rgba(77, 77, 83, 0.751);
+    color: rgb(255, 255, 255);
     padding-left: 1.4rem;
     font-size: 17px;
     width: 100%;
@@ -139,7 +139,7 @@ border-radius: 20px;
    .right{
     position: absolute;
     left: 50%;
-    top: 50%;
+    top: 55%;
     transform: translate(-50%, -50%);
     background-color: transparent;
     background-color: rgba(10, 8, 48, 0.659);
@@ -185,6 +185,9 @@ border-radius: 20px;
     }
     .btn{
         width: 4rem;
+    }
+    .h2{
+        line-height: 38px;
     }
 
 }

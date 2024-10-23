@@ -61,7 +61,7 @@
     background-color: white;
 }
 .active {
-    background-color: rgb(85, 85, 213);
+    background-color: rgb(5, 141, 232);
     color: white;
     /* border-color: blue; */
     border: none;
@@ -169,9 +169,10 @@
     font-size: 25px;
     font-style: italic;
     background-color: transparent;
-    color: blue;
+    color: rgb(5, 141, 232);
     height: 3rem;
-    border: 1px solid rgba(0, 0, 255, 0.42);
+    border: 1px solid rgb(5, 141, 232);
+    ;
     width: 6rem;
     border-radius: 10px;
     cursor: pointer;
@@ -184,7 +185,7 @@
     justify-content: center;
     align-items: center;
     gap: 1rem;
-    color: rgba(0, 0, 255, 0.652);
+    color: rgb(5, 141, 232);
 
 }
 .overlay {
@@ -200,7 +201,7 @@
     align-items: center;
 }
 .btnPost:hover{
-background-color: rgba(0, 0, 255, 0.478);
+    background-color: rgb(5, 141, 232);
 color: white;
 border: none;
 }

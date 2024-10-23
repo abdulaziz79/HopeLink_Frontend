@@ -53,7 +53,7 @@ function Login() {
       <div className={styles.left}>
         <img src={img} className={styles.img} />
         <div className={styles.heroBackgrd}></div>
-        <a href='/'><button className={styles.btn}>Back to website <ArrowForwardIcon /></button></a>
+        <a href='/'><button className={styles.btn}><span className={styles.none}>Back to website</span> <ArrowForwardIcon /></button></a>
         <h1 className={styles.h1}>HopeLink</h1>
         <p className={styles.p}>Creating Connection,<br />Changing Lives</p>
       </div>

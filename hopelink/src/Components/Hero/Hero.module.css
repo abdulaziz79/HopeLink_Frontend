@@ -1,6 +1,49 @@
+.container{
+    position: relative;
+    height: 100vh;
+}
 .hero{
     width: 100%;
-    height: 100vh;
+    height: 100%;
+    display: flex;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+.left{
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+    gap: 4rem;
+    padding-left: 10rem;
+}
+.colorful{
+    /* position: absolute; */
+    bottom: 11%;
+    left: 7.5%;
+    font-size: 20px;
+    font-weight: 300;
+    color: white;
+}
+.pRight{
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.pRight1{
+    /* position: absolute; */
+
+    color: lightgray;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+    gap: 1.7rem;
+    /* line-height: 10px; */
+    
 }
 .image{
     object-fit: cover;
@@ -17,7 +60,7 @@
     background: rgba(2, 8, 12, 0.587); 
 }
 .p{
-    position: absolute;
+    /* position: absolute; */
     left: 7.5%;
     top: 37%;
     color: lightgray;
@@ -30,17 +73,7 @@
     font-weight: 600;
     color: rgb(90, 191, 225);
 }
-.pRight1{
-    position: absolute;
-    right: 17%;
-    top: 20%;
-    color: lightgray;
-    display: flex;
-    flex-direction: column;
-    gap: 1.7rem;
-    /* line-height: 10px; */
-    
-}
+
 /* .pRight1{
     display: flex;
     flex-direction: column;
@@ -49,14 +82,7 @@
 .h2{
     font-size: 30px;
 }
-.colorful{
-    position: absolute;
-    bottom: 11%;
-    left: 7.5%;
-    font-size: 20px;
-    font-weight: 300;
-    color: white;
-}
+
 .color1{
     width: 30rem;
     background-color: rgb(218, 104, 78);
@@ -81,4 +107,125 @@
     padding: 18px;
     z-index: 4;
     margin-top: -17px;
+}
+
+
+@media screen and (max-width :1377px) {
+    .left{
+        padding-left: 6rem;
+    }
+    .p{
+        font-size: 45px;
+        line-height: 47px;
+    }
+    .span{
+        font-size: 60px;
+    }
+}
+@media screen and (max-width :1100px) {
+    .left{
+        padding-left: 4rem;
+    }
+    .p{
+        font-size: 35px;
+        line-height: 40px;
+    }
+    .span{
+        font-size: 50px;
+    }
+}
+@media screen and (max-width :700px) {
+    .hero{
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+    }
+    .left{
+        width: 100%;
+    }
+    .pRight{
+        width: 100%;
+        justify-content: flex-start;
+        padding-left: 4rem;
+    }
+    .colorful{
+        font-size: 15px;
+    }
+    .color1{
+        width: 25rem;
+        background-color: rgb(218, 104, 78);
+        padding: 18px;
+    }
+    .color2{
+        width: 20rem;
+        background-color: rgb(26, 148, 218);
+        padding: 18px;
+        margin-top: -17px;
+    }
+    .color3{
+        width: 15rem;
+        background-color: rgb(188, 145, 89);
+        padding: 18px;
+        z-index: 3;
+        margin-top: -17px;
+        color: black;
+    }.color4{
+        width: 10rem;
+        background-color: rgb(46, 15, 11);
+        padding: 18px;
+        z-index: 4;
+        margin-top: -17px;
+    }
+}
+@media screen and (max-width :520px) {
+.container{
+    height: 110vh;
+}
+.pRight1{
+    gap: 0.5rem;
+}
+    .left{
+    padding-left: 1rem;
+}
+.pRight{
+    padding-left: 1rem;
+}
+
+.p{
+    font-size: 25px;
+    line-height: 40px;
+    line-height: 30px;
+}
+.span{
+    font-size: 40px;
+}
+.color1{
+    width: 18rem;
+    background-color: rgb(218, 104, 78);
+    padding: 18px;
+}
+.color2{
+    width: 15rem;
+    background-color: rgb(26, 148, 218);
+    padding: 18px;
+    margin-top: -17px;
+}
+.color3{
+    width: 12rem;
+    background-color: rgb(188, 145, 89);
+    padding: 18px;
+    z-index: 3;
+    margin-top: -17px;
+    color: black;
+}.color4{
+    width: 10rem;
+    background-color: rgb(46, 15, 11);
+    padding: 18px;
+    z-index: 4;
+    margin-top: -17px;
+}
+.colorful{
+    font-size: 13px;
+}
 }

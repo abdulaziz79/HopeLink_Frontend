@@ -7,12 +7,14 @@ import Donate from "../Pages/Donate/Donate";
 import Register from "../Pages/Register/Register";
 import Profile from "../Pages/Profile/Profile";
 import Volunteer from "../Pages/Volunteer/Volunteer";
+import ScrollToTop from "../Components/ScrollToTop";
 
 
 const Router = ()=>{
     return(
         <div>
             <BrowserRouter>
+            <ScrollToTop />
             <Routes>
                 <Route path="/login" element = {<Login />} />
                 <Route path="/register" element = {<Register />} />

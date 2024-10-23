@@ -14,9 +14,9 @@ const Footer = () => {
         <div className={style.container}>
             <div className={style.logoDescription}>
                 <Link to="/">
-                    <span className={style.span} >CraftVista</span> 
+                    <span className={style.span} >HopeLink</span> 
                 </Link>
-                <p>Unlock the potential of your projects with curated expertise, seamless solutions, and a supportive community on our premier work platform.</p>            </div>
+                <p>Empower communities, foster connections, and provide support for those in need. Join us in creating solutions that make a real difference—together, we can build a stronger tomorrow.</p>            </div>
             <div className={style.contact}>
                 <h3 className={style.title}>Support</h3>
                 <ul className={style.links}>
@@ -57,7 +57,7 @@ const Footer = () => {
             </div>
         </div>
         <div className={style.copyright}>
-            © 2024 - Craft-Vista All Rights Reserved | Powered By: Abdulaziz cherkawi
+            © 2024 - Hope-Link All Rights Reserved | Powered By: Abdulaziz cherkawi
         </div>
     </footer>
 )
