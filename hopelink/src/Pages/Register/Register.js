@@ -28,7 +28,7 @@ function Register() {
     e.preventDefault();
 
     try {
-      // Send the formData as JSON in the body
+
       const response = await axios.post(
         'http://localhost:5001/user/register',
         {
@@ -37,8 +37,8 @@ function Register() {
           password: formData.password,
         },
         {
-          headers: { 'Content-Type': 'application/json' }, // Sending data as JSON
-          withCredentials: true, // If you need to handle cookies
+          headers: { 'Content-Type': 'application/json' }, 
+          withCredentials: true, 
         }
       );
 

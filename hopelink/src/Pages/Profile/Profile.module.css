@@ -293,9 +293,9 @@
     font-size: 25px;
     font-style: italic;
     background-color: transparent;
-    background-color: rgb(5, 141, 232);
+    border: 1px solid rgb(5, 141, 232); 
     height: 3rem;
-    background-color: rgb(5, 141, 232);
+    color: rgb(5, 141, 232);
     width: 6rem;
     border-radius: 10px;
     cursor: pointer;
@@ -308,7 +308,7 @@
     justify-content: center;
     align-items: center;
     gap: 1rem;
-    background-color: rgb(5, 141, 232);
+    color: rgb(5, 141, 232);
 
 }
 .overlay {

@@ -38,11 +38,12 @@ function Login() {
       );
       // console.log(response)
       if (response) {
-    await fetchUserData();
-    console.log("login successful" , response);
-    setTimeout(() => {
-        navigate("/", { replace: true });
-    }, 1000);
+        setUser(response.data)
+        await fetchUserData();
+        console.log("login successful" , response);
+        setTimeout(() => {
+            navigate("/", { replace: true });
+        }, 1000);
 }
     } catch (error) {
       console.log(error.message)
