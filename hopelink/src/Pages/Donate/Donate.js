@@ -261,7 +261,7 @@ function Donate() {
     
 
           {isOverlayDonate && <section className={styles.overlay}><Sell setIsOverlayDonate={setIsOverlayDonate} fetchDataDonation={fetchDataDonation} /></section>}
-          {isOverlayReq && <section className={styles.overlay}><Request setIsOverlayReq={setIsOverlayReq} /></section>}
+          {isOverlayReq && <section className={styles.overlay}><Request fetchRequest={fetchRequest} setIsOverlayReq={setIsOverlayReq} /></section>}
         </main>
       </section>
     </>

@@ -16,6 +16,7 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import AddHouse from '../House/AddHouse/AddHouse';
 import Sell from '../Donate/Sell/Sell';
+import PostVolunteer from '../Volunteer/PostVolunteer/PostVolunteer';
 
 function Profile() {
   const { user } = useContext(UserContext);
@@ -29,6 +30,7 @@ function Profile() {
   const [loading, setLoading] = useState(true);  
   const [isOverlay, setIsOverlay] = useState(false);
   const [isOverlayDonate, setIsOverlayDonate] = useState(false);
+  const [isOverlayVolunteer, setIsOverlayVolunteer] = useState(false);
   const [activeButton, setActiveButton] = useState('House');
   const navigate = useNavigate();
 
@@ -280,7 +282,7 @@ function Profile() {
             { activeButton === "Volunteer" && user && user.userId === userID._id && (
              <div className={styles.add}>
              <p>Offer a service</p>
-             <button className={styles.btnPost} onClick={() => user ? setIsOverlayDonate(true) : navigate('/login')}>+</button>
+             <button className={styles.btnPost} onClick={() => user ? setIsOverlayVolunteer(true) : navigate('/login')}>+</button>
            </div>
            )}
       
@@ -495,6 +497,7 @@ function Profile() {
       </div>
       {isOverlay && <section className={styles.overlay}><AddHouse fetchData={fetchData} setIsOverlay={setIsOverlay} /></section>}
       {isOverlayDonate && <section className={styles.overlay}><Sell fetchDataDonation={fetchDataDonation} setIsOverlayDonate={setIsOverlayDonate} /></section>}
+      {isOverlayVolunteer && <section className={styles.overlay}><PostVolunteer fetchDataDonation={fetchVolunteer} setIsOverlayVolunteer={setIsOverlayVolunteer} /></section>}
 
     </div>
   );

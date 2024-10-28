@@ -1,13 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import styles from './AddHouse.module.css';
 import axios from 'axios';
-import { useContext } from 'react';
 import { UserContext } from '../../../UseContext/UserContext';
 
 function AddHouse({ setIsOverlay, fetchData }) {
   const { user } = useContext(UserContext); 
 
-  // Form state
+  // Form and state management
   const [formData, setFormData] = useState({
     location: '',
     phone: '',
@@ -18,6 +17,7 @@ function AddHouse({ setIsOverlay, fetchData }) {
     images: []
   });
 
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   const handleChange = (e) => {
@@ -35,15 +35,27 @@ function AddHouse({ setIsOverlay, fetchData }) {
     }
   };
 
-  // Handle form submission
+  // Form submission handler
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    setError(null);
 
-    if (!formData.location || !formData.phone || !formData.price) {
-      setError('All fields are required.');
-      return;
+    // Check if more than 6 images are selected
+    if (formData.images.length > 6) {
+      setError('You can upload a maximum of 6 images.');
+      setLoading(false);
+      return; // Exit the function if the error is present
     }
 
+    // Check for other required fields
+    if (!formData.location || !formData.phone || !formData.price) {
+      setError('All fields are required.');
+      setLoading(false);
+      return; // Exit the function if any field is missing
+    }
+
+    // Create FormData only if there are no errors
     const formDataToSend = new FormData();
     formDataToSend.append('location', formData.location);
     formDataToSend.append('phone', formData.phone);
@@ -58,12 +70,14 @@ function AddHouse({ setIsOverlay, fetchData }) {
     });
 
     try {
-      const response = await axios.post(`${process.env.REACT_APP_PATH}/houses/add`, formDataToSend, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-        withCredentials: true,
-      });
+      const response = await axios.post(
+        `${process.env.REACT_APP_PATH}/houses/add`, 
+        formDataToSend, 
+        { headers: { 'Content-Type': 'multipart/form-data' }, withCredentials: true }
+      );
 
       if (response) {
+        // Reset the form after successful submission
         setFormData({
           location: '',
           phone: '',
@@ -73,19 +87,22 @@ function AddHouse({ setIsOverlay, fetchData }) {
           userId: user && user.userId,
           images: [],
         });
-        console.log('Form Data Submitted:', response.data);
         setIsOverlay(false);
-        fetchData()
+        fetchData();
       }
     } catch (error) {
-      console.log(error.message);
+      setError(error.response?.data?.error || "An unexpected error occurred");
+    } finally {
+      setLoading(false);
     }
-  };
+};
+
+
 
   return (
     <div className={styles.addHouseContainer}>
       <h2>List Your House</h2>
-      {error && <p className={styles.error}>{error}</p>}
+      {error && <p className={styles.error}>{error}</p>} {/* Display error message */}
       <form onSubmit={handleSubmit}>
         <div className={styles.inputGroup}>
           <label>Location:</label>
@@ -97,7 +114,6 @@ function AddHouse({ setIsOverlay, fetchData }) {
             required
           />
         </div>
-
         <div className={styles.inputGroup}>
           <label>Phone Number:</label>
           <input
@@ -109,7 +125,6 @@ function AddHouse({ setIsOverlay, fetchData }) {
             placeholder="e.g., 79123456"
           />
         </div>
-
         <div className={styles.inputGroup}>
           <label>Number of Bedrooms:</label>
           <input
@@ -121,7 +136,6 @@ function AddHouse({ setIsOverlay, fetchData }) {
             placeholder="e.g., 3"
           />
         </div>
-
         <div className={styles.inputGroup}>
           <label>House Size (in square meters):</label>
           <input
@@ -132,7 +146,6 @@ function AddHouse({ setIsOverlay, fetchData }) {
             placeholder="e.g., 200 m²"
           />
         </div>
-
         <div className={styles.inputGroup}>
           <label>Price (USD):</label>
           <input
@@ -144,7 +157,6 @@ function AddHouse({ setIsOverlay, fetchData }) {
             placeholder="e.g., 500"
           />
         </div>
-
         <div className={styles.inputGroup}>
           <label>Upload Images (Max 6):</label>
           <input
@@ -158,9 +170,10 @@ function AddHouse({ setIsOverlay, fetchData }) {
             <p>{formData.images.length} image(s) selected</p>
           )}
         </div>
-
         <div className={styles.buttonGroup}>
-          <button type="submit" className={styles.submitButton}>Submit</button>
+          <button type="submit" className={styles.submitButton} disabled={loading}>
+            {loading ? "Submitting..." : "Submit"}
+          </button>
           <button
             type="button"
             className={styles.cancelButton}

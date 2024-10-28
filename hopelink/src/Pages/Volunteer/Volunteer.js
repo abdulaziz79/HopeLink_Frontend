@@ -18,7 +18,7 @@ import Avatar from '@mui/material/Avatar';
 function Volunteer() {
   const [activeButton, setActiveButton] = useState('Posts');
   const [imageBig, setImageBig] = useState(null); 
-  const [isOverlay, setIsOverlay] =useState(false)
+  const [isOverlayVolunteer, setIsOverlayVolunteer] =useState(false)
   const [isOverlayReq, setIsOverlayReq] =useState(false)
   const [requestData, setRequestData] = useState([])
   const [volunteers, setVolunteers] = useState([])
@@ -123,7 +123,7 @@ function Volunteer() {
               {activeButton === "Posts" && (
             <div className={styles.add}>
               Offer a Service
-              <button className={styles.btnPost} onClick={() => user ? setIsOverlay(true) : navigate('/login')}>+</button>
+              <button className={styles.btnPost} onClick={() => user ? setIsOverlayVolunteer(true) : navigate('/login')}>+</button>
             </div>
           )}
               <section aria-label="Posts">
@@ -212,9 +212,9 @@ function Volunteer() {
         
         </section>
 
-        {isOverlay && (
+        {isOverlayVolunteer && (
           <section className={styles.overlay}>
-            <PostVolunteer setIsOverlay={setIsOverlay} />
+            <PostVolunteer fetchVolunteer={fetchVolunteer} setIsOverlayVolunteer={setIsOverlayVolunteer} />
           </section>
         )}
 

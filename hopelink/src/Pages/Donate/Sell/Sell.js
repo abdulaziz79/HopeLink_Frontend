@@ -18,6 +18,7 @@ function Sell({ fetchDataDonation, setIsOverlayDonate }) {
 
 
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -33,6 +34,8 @@ function Sell({ fetchDataDonation, setIsOverlayDonate }) {
 
 const handleSubmit = async (e) => {
   e.preventDefault();
+  setLoading(true);
+  setError(null);
   const formDataObj = new FormData();
   
   // Append form data
@@ -70,11 +73,10 @@ const handleSubmit = async (e) => {
       fetchDataDonation()
     }
   } catch (error) {
-    console.log(error.message);
-    setError("Failed to submit the form");
+    setError(error.response?.data?.error || "An unexpected error occurred");
+  } finally {
+    setLoading(false);
   }
-
-  console.log('Form Data Submitted:', formData);
 };
 
   return (
@@ -138,7 +140,9 @@ const handleSubmit = async (e) => {
           />
         </div>
         <div className={styles.buttonGroup}>
-          <button type="submit" className={styles.submitButton}>Submit</button>
+        <button type="submit" className={styles.submitButton} disabled={loading}>
+            {loading ? "Submitting..." : "Submit"}
+          </button>
           <button
             type="button"
             className={styles.cancelButton}

@@ -7,6 +7,8 @@ import { UserContext } from '../../UseContext/UserContext';
 import axios from "axios";
 
 function Register() {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");  
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -26,6 +28,8 @@ function Register() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    setError("");  
 
     try {
 
@@ -46,11 +50,13 @@ function Register() {
       fetchUserData();
       navigate('/');
     } catch (error) {
-      if (error.response && error.response.status === 401) {
-        console.log("Email already exists");
+      if (error.response && error.response.data && error.response.data.error) {
+        setError(error.response.data.error);
       } else {
-        console.log(error.message);
+        setError("An unexpected error occurred");
       }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -96,7 +102,11 @@ function Register() {
             required
             className={styles.input}
           />
-          <button type="submit" className={styles.button}>Create account</button>
+            {error && <p className={styles.error}>{error}</p>}
+
+          <button type="submit" className={styles.button} disabled={loading}>
+            {loading ? "Loading..." : "Login"}
+          </button>
         </form>
       </div>
     </div>

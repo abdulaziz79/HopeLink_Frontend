@@ -1,58 +1,60 @@
-import {useState} from 'react'
-import styles from "./Login.module.css"
-import img from "../../assets/images/login.jpg"
+import { useState, useContext } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+import styles from "./Login.module.css";
+import img from "../../assets/images/login.jpg";
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import { Link } from 'react-router-dom';
 import { UserContext } from '../../UseContext/UserContext';
-import { useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-
 function Login() {
-  const [formData, setFormData]= useState({
-    email:'',
-    password:''
-  })
-  const { setUser, fetchUserData }=useContext(UserContext)
-  
-  const navigate = useNavigate()
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");  
+  const [formData, setFormData] = useState({
+    email: '',
+    password: ''
+  });
+  const { setUser, fetchUserData } = useContext(UserContext);
+  const navigate = useNavigate();
 
-  const handlInputChange=(e)=>{
-    const {name, value}=e.target;
-
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
     setFormData({
       ...formData,
-      [name]:value
-    })
-  }
-
+      [name]: value
+    });
+  };
 
   const handleLogin = async (e) => {
     e.preventDefault();
- 
+    setLoading(true);
+    setError("");  
+
     try {
-      const response= await axios.post(`${process.env.REACT_APP_PATH}/user/login`,
-      formData,
-      {withCredentials:true}
+      const response = await axios.post(
+        `${process.env.REACT_APP_PATH}/user/login`,
+        formData,
+        { withCredentials: true }
       );
-      // console.log(response)
+
       if (response) {
-        setUser(response.data)
+        setUser(response.data);
         await fetchUserData();
-        console.log("login successful" , response);
+        console.log("Login successful", response);
         setTimeout(() => {
-            navigate("/", { replace: true });
+          navigate("/", { replace: true });
         }, 1000);
-}
+      }
     } catch (error) {
-      console.log(error.message)
+      setError(error.response?.data || "An unexpected error occurred");
+    } finally {
+      setLoading(false);
     }
   };
+
   return (
-    <div className={styles.container}>  
+    <div className={styles.container}>
       <div className={styles.left}>
-        <img src={img} className={styles.img} />
+        <img src={img} className={styles.img} alt="Login" />
         <div className={styles.heroBackgrd}></div>
         <a href='/'><button className={styles.btn}><span className={styles.none}>Back to website</span> <ArrowForwardIcon /></button></a>
         <h1 className={styles.h1}>HopeLink</h1>
@@ -60,15 +62,21 @@ function Login() {
       </div>
       <div className={styles.right}>
         <h2 className={styles.h2}>Access Your Account</h2>
-        <p className={styles.p2}>Don't have an account? <Link to="/register" className={styles.register}>register</Link></p>
+        <p className={styles.p2}>Don't have an account? <Link to="/register" className={styles.register}>Register</Link></p>
         <form className={styles.form} onSubmit={handleLogin}>
-          <input  type="text"  name="email" placeholder='Enter your email' value={formData.email} onChange={handlInputChange} required className={styles.input} />
-          <input type="password" name="password" placeholder='Enter your password' value={formData.password} onChange={handlInputChange} required className={styles.input} />
-          <button type="submit" className={styles.button}>Login</button>
+          <input type="text" name="email" placeholder="Enter your email" value={formData.email} onChange={handleInputChange} required className={styles.input} />
+          <input type="password" name="password" placeholder="Enter your password" value={formData.password} onChange={handleInputChange} required className={styles.input} />
+
+          {/* Display error message */}
+          {error && <p className={styles.error}>{error}</p>}
+
+          <button type="submit" className={styles.button} disabled={loading}>
+            {loading ? "Loading..." : "Login"}
+          </button>
         </form>
       </div>
     </div>
-  )
+  );
 }
 
-export default Login
+export default Login;

@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useContext } from 'react';
 import { UserContext } from '../../../UseContext/UserContext';
 
-function PostVolunteer({ setIsOverlay }) {
+function PostVolunteer({ setIsOverlayVolunteer, fetchVolunteer }) {
   const {user} = useContext(UserContext)
   const [formData, setFormData] = useState({
     location: '',
@@ -14,6 +14,7 @@ function PostVolunteer({ setIsOverlay }) {
   });
 
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -25,6 +26,8 @@ function PostVolunteer({ setIsOverlay }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    setError(null);
   
     const dataToSend = {
       location: formData.location,
@@ -49,10 +52,13 @@ function PostVolunteer({ setIsOverlay }) {
         });
   
         console.log("Form Data Submitted: ", response.data); 
-        setIsOverlay(false); 
+        setIsOverlayVolunteer(false); 
+        fetchVolunteer()
       }
     } catch (error) {
-      console.log("Error submitting form: ", error.message); 
+      setError(error.response?.data?.error || "An unexpected error occurred");
+    } finally {
+      setLoading(false);
     }
   };
   
@@ -98,10 +104,10 @@ function PostVolunteer({ setIsOverlay }) {
           ></textarea>
         </div>
         <div className={styles.btns}>
-        <button type="submit" className={styles.submitBtn}>
-          Submit
-        </button>
-        <button type="button" className={styles.cancelBtn} onClick={() => setIsOverlay(false)}>
+        <button type="submit" className={styles.submitBtn} disabled={loading}>
+            {loading ? "Submitting..." : "Submit"}
+          </button>
+        <button type="button" className={styles.cancelBtn} onClick={() => setIsOverlayVolunteer(false)}>
           Cancel
         </button>
         </div>

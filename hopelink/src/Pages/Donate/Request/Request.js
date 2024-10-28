@@ -4,7 +4,7 @@ import { UserContext } from '../../../UseContext/UserContext';
 import { useContext } from 'react';
 import axios from 'axios';
 
-function Request({ setIsOverlayReq }) {
+function Request({ setIsOverlayReq, fetchRequest }) {
   const { user} =useContext(UserContext)
   const [formData, setFormData] = useState({
     location: '',
@@ -15,6 +15,7 @@ function Request({ setIsOverlayReq }) {
   });
 
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -24,10 +25,12 @@ function Request({ setIsOverlayReq }) {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    setError(null);
     try {
-      const respone = axios.post(`${process.env.REACT_APP_PATH}/requestSupplies/add`,formData,{headers:{"Content-Type": "multipart/form-data"},withCredentials:true})
+      const respone = await axios.post(`${process.env.REACT_APP_PATH}/requestSupplies/add`,formData,{headers:{"Content-Type": "multipart/form-data"},withCredentials:true})
       if(respone){
         setFormData({
           location: '',
@@ -36,11 +39,14 @@ function Request({ setIsOverlayReq }) {
           requestType:"Supplies",
           requestedBy:user && user.userId
         })
-        console.log("Form Data Submitted: ", formData);
+        // console.log("Form Data Submitted: ", formData);
         setIsOverlayReq(false); 
+        fetchRequest()
       }
     } catch (error) {
-      console.log(error.message)
+      setError(error.response?.data?.error || "An unexpected error occurred");
+    } finally {
+      setLoading(false);
     }
 
   };
@@ -87,9 +93,9 @@ function Request({ setIsOverlayReq }) {
           ></textarea>
         </div>
         <div className={styles.btns}>
-        <button type="submit" className={styles.submitBtn}>
-          Submit Request
-        </button>
+        <button type="submit" className={styles.submitBtn} disabled={loading}>
+            {loading ? "Submitting..." : "Submit"}
+          </button>
         <button type="button" className={styles.cancelBtn} onClick={() => setIsOverlayReq(false)}>
           Cancel
         </button>

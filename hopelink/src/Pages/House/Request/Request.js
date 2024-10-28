@@ -4,7 +4,7 @@ import { useContext } from 'react';
 import { UserContext } from '../../../UseContext/UserContext';
 import axios from 'axios';
 
-function Request({ setIsOverlayReq , fetchReuest}) {
+function Request({ setIsOverlayReq , fetchRequest}) {
   const { user} =useContext(UserContext)
   const [formData, setFormData] = useState({
     location: '',
@@ -15,6 +15,8 @@ function Request({ setIsOverlayReq , fetchReuest}) {
   });
 
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
+
 
 
   const handleChange = (e) => {
@@ -22,10 +24,12 @@ function Request({ setIsOverlayReq , fetchReuest}) {
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    setError(null);
     try {
-      const respone = axios.post(`${process.env.REACT_APP_PATH}/requestSupplies/add`,formData,{headers:{"Content-Type": "multipart/form-data"},withCredentials:true})
+      const respone = await axios.post(`${process.env.REACT_APP_PATH}/requestSupplies/add`,formData,{headers:{"Content-Type": "multipart/form-data"},withCredentials:true})
       if(respone){
         setFormData({
           location: '',
@@ -36,11 +40,13 @@ function Request({ setIsOverlayReq , fetchReuest}) {
         })
         console.log("Form Data Submitted: ", formData);
         setIsOverlayReq(false); 
-        fetchReuest()
+        fetchRequest()
       
       }
     } catch (error) {
-      console.log(error.message)
+      setError(error.response?.data?.error || "An unexpected error occurred");
+    } finally {
+      setLoading(false);
     }
 
   };
@@ -86,7 +92,9 @@ function Request({ setIsOverlayReq , fetchReuest}) {
         </div>
 
         <div className={styles.buttonGroup}>
-          <button type="submit" className={styles.submitButton}>Submit</button>
+        <button type="submit" className={styles.submitButton} disabled={loading}>
+            {loading ? "Submitting..." : "Submit"}
+          </button>
           <button
             type="button"
             className={styles.cancelButton}

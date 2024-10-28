@@ -113,6 +113,9 @@ border-radius: 20px;
     color: white;
     font-size: 18px;
 }
+.error{
+    color: red;
+}
 .nameEmail{
     width: 100%;
     display: flex;

@@ -16,6 +16,8 @@ function Request({ setIsOverlayReq, fetchData }) {
   });
 
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -29,6 +31,8 @@ function Request({ setIsOverlayReq, fetchData }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    setError(null);
     
     // Create a FormData object
     const formDataToSend = new FormData();
@@ -61,8 +65,10 @@ function Request({ setIsOverlayReq, fetchData }) {
         setIsOverlayReq(false); 
         fetchData()
       }
-    } catch (error) {
-      console.log(error.message);
+    }  catch (error) {
+      setError(error.response?.data?.error || "An unexpected error occurred");
+    } finally {
+      setLoading(false);
     }
 };
 
@@ -117,7 +123,9 @@ function Request({ setIsOverlayReq, fetchData }) {
 
 
         <div className={styles.buttonGroup}>
-          <button type="submit" className={styles.submitButton}>Submit</button>
+        <button type="submit" className={styles.submitButton} disabled={loading}>
+            {loading ? "Submitting..." : "Submit"}
+          </button>
           <button
             type="button"
             className={styles.cancelButton}
